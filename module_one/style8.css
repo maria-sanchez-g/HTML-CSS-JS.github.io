@@ -1,0 +1,14 @@
+
+body { 
+    font-family: sans-serif; 
+    margin: 0;
+    background-color: lightblue;
+    text-align:center;
+}
+.button{
+    
+    border:none;
+    color:black;
+    text-align:center;
+    font-size: 16px;
+}

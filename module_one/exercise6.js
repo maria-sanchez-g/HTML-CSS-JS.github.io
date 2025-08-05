@@ -6,8 +6,8 @@ const book = {
 };
 
 console.log(book);
-console.log(book.title);
-console.log(book.author);
+console.log(`title: $book.title}`);
+console.log(`author: $book.author`);
 console.log(book.number_pages);
 
 book.description = "data";
