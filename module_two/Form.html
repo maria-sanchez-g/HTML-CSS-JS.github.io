@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Tittle</title>
+    </head>
+
+    <body>
+        <form onsubmit="formSubmit(event)">
+            <div>
+                <label>
+                FirstName
+                <input id= "firstName" type="text" />
+                </label>
+            </div>
+            <div>
+                <label>
+                LastName
+                <input id= "lastName" type="text" />
+                </label>
+            </div>
+            <button type="submit">submit</button>
+        </form>
+    
+    <script>
+        function formSubmit(event){
+            event.preventDefault();
+            console.log(event)
+            const fN = document.getElementById("firstName").value;
+            const lN = document.getElementById("lastName").value;
+            sayHi(fN, lN);
+        }
+        function sayHi(fN, lN) {
+            console.log(`Hi, ${fN} ${lN}`);
+        }
+    </script>
+    </body>
+</html>
