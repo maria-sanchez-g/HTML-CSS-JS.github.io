@@ -2,7 +2,6 @@
 * {
    margin: 20px; 
 }
-
 header {
     display: flex;
     align-items: center;
@@ -22,16 +21,96 @@ header {
     width: auto;
     max-width: 100%;
 }
-
-/*text inside box index */
+/*styling links*/
+a:visited {
+    color:green;
+}
+a:active {
+    color:hotpink;
+}
+a:hover {
+    color:blue;
+    font-size: 150%;
+}
+/*text inside box index, box model, font-family*/
 #raiz {
     margin: 10px;
     padding: 10px;
     text-align: justify;
     border: 1px solid black;
+    font-family: "Open Sans";
 }
-
+/*descendant combinator*/
 #raiz pre {
-  white-space: pre-wrap;
-  text-align: justify;
+    white-space: pre-wrap;
+    text-align: justify;
+    font-family: "Open Sans";
+}
+#raiz p {
+    line-height: 1.6;
+}
+/*child combinator*/
+section > h1{
+    color:darkolivegreen
+/*sticky*/
+}
+.stickyTitle {
+    position: sticky;
+    top: 0;
+    background-color:aliceblue;
+}
+/*box model, border-radius, background-image, positioning*/
+#typesWood {
+    position: relative;
+    margin: 5em;
+    padding: 20px;
+    text-align: left;
+    border: 2px solid black;
+    border-radius: 50px 20px;
+    background-color: beige;
+    overflow:hidden;
+}
+#typesWood::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: url("images/raiz.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+    opacity: 0.5;
+    z-index: 0;
+}
+#typesWood >* {
+    position: relative;
+    z-index: 1;
+}
+/*box model*/
+#furniture {
+    margin: 5vh;
+    padding: 5vw;
+    height: 9%;
+    text-align: left;
+    border: 5px solid black;
+    Background-color: beige !important;
+}
+/*important! ruke*/
+#furniture {
+    background-color:lightblue;
+}
+/*box sizing, overflow, outline*/
+#OnRequest {
+    width: 300px;
+    height: 100px;
+    padding: 50px;
+    text-align: left;
+    border: 3px solid black;
+    Background-color: beige;
+    outline-style: double;
+    box-sizing: border-box;
+    overflow: auto;
+}
+/*calc*/
+.gallery{
+    display: inline-block;
+    width: calc(100% - 350px);
 }
