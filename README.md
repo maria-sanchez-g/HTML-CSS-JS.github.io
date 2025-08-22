@@ -1,2 +1,2 @@
 # Maria-Sanchez
-html - css - javascript
+html - css
