@@ -1,2 +1,2 @@
 # Maria-Sanchez
-html - css
+html - css - java script
