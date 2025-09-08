@@ -1,0 +1,89 @@
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Todo demo</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
+      crossorigin="anonymous"
+    />
+  </head>
+  <body>
+    <template id="todoTemplate">
+      <div class="card" style="width: 18rem">
+        <div class="card-body">
+          <h5 id="todoTitle"></h5>
+          <p id="toDoDesc"></p>
+          <button id="toDoDel" class="btn btn-danger">Del</button>
+        </div>
+      </div>
+    </template>
+    <div class="container">
+      <h1>My todo list:</h1>
+      <form onsubmit="todoSubmit(event)">
+        <div class="mb-3">
+          <label for="todoTitle" class="form-label">Title</label>
+          <input type="text" class="form-control" id="todoTitle" />
+        </div>
+        <div class="mb-3">
+          <label for="todoDesc" class="form-label">Description</label>
+          <input type="text" class="form-control" id="todoDesc" />
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </form>
+      <div class="row" id="todoContainer"></div>
+    </div>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+      crossorigin="anonymous"
+    ></script>
+    <script>
+      const todos = [];
+      function displayTodo({ title, desc }, index) {
+        const copiedTemplate = document
+          .getElementById("todoTemplate")
+          .content.cloneNode(true);
+        copiedTemplate.getElementById("todoTitle").innerText = title;
+        copiedTemplate.getElementById("toDoDesc").innerText = desc;
+        copiedTemplate
+          .getElementById("toDoDel")
+          .addEventListener("click", () => {
+            todos.splice(index, 1);
+            renderTodos();
+          });
+        document.getElementById("todoContainer").appendChild(copiedTemplate);
+      }
+      function renderTodos() {
+        document.getElementById("todoContainer").innerHTML = "";
+        todos.forEach((todo, index) => {
+          displayTodo(todo, index);
+        });
+      }
+      function todoSubmit(event) {
+        event.preventDefault();
+        //collect info from form
+        const title = document.getElementById("todoTitle").value;
+        const desc = document.getElementById("todoDesc").value;
+        // create object with the info
+        const todo = {
+          title,
+          desc,
+        };
+        todos.push(todo);
+        renderTodos();
+      }
+      function todoDel() {
+        console.log("delete");
+      }
+    </script>
+  </body>
+</html>
+
+
+
+
+
+
