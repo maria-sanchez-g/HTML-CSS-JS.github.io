@@ -60,6 +60,38 @@ console.log(updatedBooks_1);
 //const update to keep the original books untouched (no mutation), and you have a separate array with the updated data.
 
 //d
+function getTitles(authorInitial) {
+    let letter = books.filter(letter => letter.author.startsWith(authorInitial));
+    let letter_1 = letter.map(letter_1 => letter_1.title);
+    return letter_1
+}
 
+console.log(getTitles("A"));
+
+function getTitles_1(authorInitial) {
+    return books
+    .filter(book => book.author.startsWith(authorInitial)) // step 1: filter authors
+    .map(book => book.title);                             // step 2: extract titles
+}
+
+console.log(getTitles_1("A"));
+
+//return books is written at the beggining because when we break a long chain into multiple lines, we often start with the variable (here books) on its own line for readability
 
 //e
+function latestBook(books) {
+    let latest_year = -Infinity;
+    books.forEach(book => {
+        if (book.year > latest_year) {
+            latest_year = book.year;
+        }
+    });
+    return books.find(book => book.year === latest_year);
+}
+
+console.log(latestBook(books))
+
+//we use -infinity because when we look for the largest year, we need to start with a number that is guaranteed to be smaller than any year in the data.
+//If we were looking for the earliest year we would use infinity
+// latest_year = book.year checks if the current book’s year is more recent than the current latestYear. If it is, you update latestYear to hold this new, bigger year.
+//At the end, we return books.find(...) to actually give back the book object that matches the year we discovered.
