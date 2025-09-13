@@ -16,13 +16,4 @@ console.log(capital("hola adios hola fu"))
 //word.slice(1) → takes the rest of the characters after the first and concatenates them.
 //.join joins the array back into a string with spaces
 
-=======
-    return str.charAt(0).toUpperCase() + str.slice(1);
-}
-
-console.log(capital("hola adios"))
-
-
-//adios has not capital letter
->>>>>>> 52cb1893d952f9fb0e09ccbbb9fcb8836900be7b
 //.map(w => w ? w[0].toUpperCase() + w.slice(1) : w)
