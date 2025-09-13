@@ -1,7 +1,6 @@
 // console.log(ucFirstLetters("los angeles") ) //Los Angeles
 
 function capital(str) {
-<<<<<<< HEAD
     return str
     .split(" ")
     .map(word => word[0].toUpperCase() + word.slice(1))
@@ -15,5 +14,10 @@ console.log(capital("hola adios hola fu"))
 //.map Iterates through each word in the array. For each word: takes the first character and makes it uppercase.
 //word.slice(1) → takes the rest of the characters after the first and concatenates them.
 //.join joins the array back into a string with spaces
+function capital(str) {
+return str.charAt(0).toUpperCase() + str.slice(1);
+}
+console.log(capital("hola adios"))
 
+//adios has not capital letter
 //.map(w => w ? w[0].toUpperCase() + w.slice(1) : w)
