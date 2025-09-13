@@ -79,13 +79,15 @@ console.log(camelCase_2("margin-left"))
 //     }
 //     return result;
 // }
-
-camelCase_3(cssProp) {
-    const cssProp
+function camelCase_3(cssProp) {
+  return cssProp
     .split('-')
-    .map((word, index) => 
-    index ? word[0].toUpperCase() + word.slice(1) : word)
+    .map((word, index) =>
+      index ? word[0].toUpperCase() + word.slice(1) : word
+    )
     .join('');
 }
 
-console.log(camelCase_3("margin-left"));
+console.log(camelCase_3("margin-left"));       // marginLeft
+console.log(camelCase_3("background-image"));  // backgroundImage
+console.log(camelCase_3("display"));           // display
