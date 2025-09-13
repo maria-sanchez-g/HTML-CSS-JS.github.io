@@ -81,11 +81,12 @@ console.log(camelCase_2("margin-left"))
 // }
 function camelCase_3(cssProp) {
   return cssProp
-    .split('-')
-    .map((word, index) =>
-      index ? word[0].toUpperCase() + word.slice(1) : word
+    .split('-') //split the string at every dash
+    .map((word, index) => //.map loops through each element of the array ; word is the current element ; index is the position
+      index ? word[0].toUpperCase() + word.slice(1) : word //if index == 0 return word; if > 0 capitalize the first character ; 
+      // word.slice to keep the rest unchanged
     )
-    .join('');
+    .join(''); //joins the array back
 }
 
 console.log(camelCase_3("margin-left"));       // marginLeft
