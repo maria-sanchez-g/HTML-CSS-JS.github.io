@@ -4,7 +4,7 @@
        <style>
            body {
              font-family: Arial, Helvetica, sans-serif;
-             background-colour: #e3f2fd;
+             background-color: #e3f2fd;
            }
            .card {
              padding: 10px;
@@ -30,5 +30,68 @@
            </div>
        </template>
        <div id="card-list"></div>
+       <script>
+            function addCard({title, text}) { //object destructuring, passing an object and unpack its properties inside the function
+            // ex destructuring: 
+            // const person = { name: "Bob", age: 23 };
+            // const { name, age } = person;
+            // console.log(name, age);
+              // clone the template
+            const template = document.getElementById("card-template")
+                                    .content.cloneNode(true); //makes a deep copy of everything inside template
+            // populate the template
+            template.querySelector('.card-title').innerText = title;
+            'My Card Title';
+            template.querySelector('.card-text').innerText = text;
+            'lorem ipsum ble bla';
+            // include the populated template into the page
+            document.querySelector('#card-list')
+                .appendChild(template);
+            }
+            addCard({title: "My title", text: "My text"});
+            //exercise 2
+            const data = [{name:'bob', age:23}, {name: 'alice', age:39}] //aray of objects
+            data.forEach(({ name, age}) => {
+              addCard({ title: name, text: age});
+            });
+
+            function onSubmitClick(event) {
+              event.preventDefault();
+              const title = document.getElementById("formTitle").value;
+              const text = document.getElementById("formText").value;
+              addCard({title, text});
+            }
+
+            //exercise 3
+            const artists = [
+                {
+                  name: "Van Gogh",
+                  portfolio: [
+                    { title: "portrait", url: "https://collectionapi.metmuseum.org/api/collection/v1/iiif/436532/1671316/main-image" },
+                    { title: "sky", url: "https://mymodernmet.com/wp/wp-content/uploads/2020/11/White-house-night-van-gogh-worldwide-2.jpg" }
+                  ]
+                },
+                {
+                  name: "Picasso",
+                  portfolio: [
+                    { title: "Mirror", url: "https://uploads8.wikiart.org/images/pablo-picasso/girl-before-a-mirror-1932.jpg" }
+                  ]
+                }
+              ];
+            function artCard({name, portfolio}) {
+            portfolio.forEach(({ title, url}) => {
+            const node = document.getElementById("card-template").content.cloneNode(true);
+            node.querySelector(".card-title").innerText = `${name} - ${title}`;
+            const box = node.querySelector(".card-text");
+            const img = document.createElement("img");
+            img.src = url;
+            img.alt = `${title} by ${name}`;
+            img.loading = "lazy";
+            box.replaceChildren(img);
+            document.querySelector("#card-list").appendChild(node);
+          });
+        }
+            artists.forEach(artCard);
+        </script>  
    </body>
 </html>
