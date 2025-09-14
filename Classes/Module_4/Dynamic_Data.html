@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <title>Dynamic Cars</title>
+  </head>
+  <body>
+    <!-- Responsive card template: 1 col on small, 2 on md, 4 on lg -->
+    <template id="car-template">
+      <div class="col-12 col-md-6 col-lg-3">
+        <div class="card h-100" style="margin:10px">
+          <div class="card-body">
+            <h5 class="card-title">Car title</h5>
+            <p class="card-text">Car text.</p>
+          </div>
+        </div>
+      </div>
+    </template>
+
+    <div id="car-list" class="row"></div>
+
+    <script>
+      // Renders one card from an object { title, description }
+      function addCard(car) {
+        const template = document.getElementById("car-template").content.cloneNode(true);
+        template.querySelector(".card-title").innerText = car.title;
+        template.querySelector(".card-text").innerText = car.description;
+        document.querySelector("#car-list").appendChild(template);
+      }
+
+      // Mock data
+      const carData = [
+        { title: "Audi",          description: "Audi AG is a German automotive manufacturer of luxury vehicles headquartered in Ingolstadt, Bavaria, Germany." },
+        { title: "Mercedes-Benz", description: "Mercedes-Benz, commonly referred to as Mercedes, is a German luxury automotive brand." },
+        { title: "BMW",           description: "Bayerische Motoren Werke AG (BMW) is a German multinational manufacturer of luxury vehicles and motorcycles headquartered in Munich, Bavaria, Germany." }
+      ];
+
+      // Simulate async fetch
+      function getCars() {
+        return new Promise((resolve) => {
+          setTimeout(() => resolve(carData), 1000);
+        });
+      }
+
+      // Use the data to populate cards
+      getCars().then((cars) => {
+        cars.forEach(addCard);
+        // console.log(cars); // keep if you want to inspect the data
+      });
+    </script>
+  </body>
+</html>

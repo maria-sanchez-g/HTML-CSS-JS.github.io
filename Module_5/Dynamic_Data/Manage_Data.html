@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"/>
+        <title>News</title>
+    </head>
+    <body>
+<!--The HTML <template> element represents a template in your markup. It contains "template contents"; essentially chunks of 
+cloneable DOM. Templates act as pieces of scaffolding that you can use and reuse throughout the lifetime of an app.
+To create templated content, declare some markup with placeholders for your data, and wrap it in the <template> element with a unique id:
+    The <template> element is a blueprint for markup you plan to use later.
+
+The browser parses its contents into a special DocumentFragment (accessible via .content), but it does not render them to the page, does not run scripts inside,
+and does not load images until you insert a clone into the live DOM.
+You typically: select it, clone it, fill its placeholders, append the clone to the page.-->
+        <template id="news-template">
+            <div class="col-12 col-md-6 col-lg-3">
+                <div class="card h-100" style="margin:10px">
+                <div class="card-body">
+                        <h5 class="news-title">News title</h5> <!--Placeholder that will be cloned and filled with data-->
+                        <p class="news-content card-text"></p> <!--Placeholder that will be cloned and filled with data-->
+                    </div>
+                </div>    
+            </div>
+        </template>
+        <div class="container my-4"> <!--target list, where items are inserted. Container centers content and caps its width.-->
+            <div id="news-list" class="row g-3"></div> <!--#news-list is a Bootstrap row. JavaScript will append columns (the cloned template) here.
+            g-3 adds consistent gutters between columns and rows.-->
+        </div>
+
+        <script>
+            let news = [
+                { id: 1, title: 'Election Results', content: "Newly elected minister..." },
+                { id: 2, title: 'Sporting Success', content: "World Cup winners..." },
+                { id: 3, title: 'Tornado Warning', content: "Residents should prepare..." }
+            ];
+//Async fetch simulator. Returns a Promise that resolves to the news array after ~200 ms. This delay imitates network latency so you can practice asynchronous flo
+                function getNews() {
+                return new Promise((resolve) => {
+                setTimeout(() => resolve(news), 200);
+                });
+            }
+            //Render one article.To render is to take data and draw it on the screen by creating DOM elements and inserting them into the document. In your code, 
+            // rendering is the process that turns each news object ({ id, title, content }) into visible HTML (cards) inside #news-list
+            function addNews(item) {
+                const template = document.getElementById("news-template").content.cloneNode(true); //Deep clone
+                template.querySelector(".news-title").innerText = item.title; //Fill the placeholders. Sets .news-title text from item.title
+                template.querySelector(".news-content").innerText = item.content;
+                document.querySelector("#news-list").appendChild(template);
+            }
+//"#news-list" is a CSS selector string passed to document.querySelector(..# means “select by id” in CSS. So "#news-list" matches the element with id="news-list"
+
+
+//Render the whole list. Clear the container first, replaceChildren() removes all old nodes. item.forEach loop the data and call addNews        
+            function renderNews(items) {
+                const list = document.getElementById('news-list');
+                list.replaceChildren();
+                items.forEach(addNews);
+            }
+        //First render on load
+            getNews().then(renderNews);
+
+            setInterval(async () => {
+                const items = await getNews(); //fetch current state
+                renderNews(items); //re-render to stay in sync
+            }, 5000);
+</script>
+</body>
+</html>
