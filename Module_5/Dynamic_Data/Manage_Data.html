@@ -25,6 +25,15 @@ You typically: select it, clone it, fill its placeholders, append the clone to t
                 </div>    
             </div>
         </template>
+        <form onsubmit="onSubmitClick(event)">
+            <div>
+                <label>Title</label>
+                <input name="title" id="formTitle" />
+                <label>Text</label>
+                <input name="content" id="formContent" />
+                <button type="submit">Save</button>
+            </div>
+        </form>
         <div class="container my-4"> <!--target list, where items are inserted. Container centers content and caps its width.-->
             <div id="news-list" class="row g-3"></div> <!--#news-list is a Bootstrap row. JavaScript will append columns (the cloned template) here.
             g-3 adds consistent gutters between columns and rows.-->
@@ -52,7 +61,6 @@ You typically: select it, clone it, fill its placeholders, append the clone to t
             }
 //"#news-list" is a CSS selector string passed to document.querySelector(..# means “select by id” in CSS. So "#news-list" matches the element with id="news-list"
 
-
 //Render the whole list. Clear the container first, replaceChildren() removes all old nodes. item.forEach loop the data and call addNews        
             function renderNews(items) {
                 const list = document.getElementById('news-list');
@@ -66,6 +74,13 @@ You typically: select it, clone it, fill its placeholders, append the clone to t
                 const items = await getNews(); //fetch current state
                 renderNews(items); //re-render to stay in sync
             }, 5000);
-</script>
-</body>
+
+            function onSubmitClick(event) {
+                event.preventDefault();
+                const title = document.getElementById('formTitle').value
+                const content = document.getElementById('formContent').value
+                console.log({title, content});
+            }
+        </script>
+    </body>
 </html>
