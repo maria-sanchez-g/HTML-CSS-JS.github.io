@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <template id="todoTemplate">
+      <div class="card" style="width: 18rem">
+        <div class="card-body">
+          <h5 id="todoTitle"></h5>
+          <p id="toDoDesc"></p>
+        </div>
+      </div>
+    </template>
+    <form onsubmit="todoSubmit(event)">
+      <div class="mb-3">
+        <label for="todoTitle" class="form-label">Title</label>
+        <input type="text" class="form-control" id="todoTitle" />
+      </div>
+      <div class="mb-3">
+        <label for="todoDesc" class="form-label">Description</label>
+        <input type="text" class="form-control" id="todoDesc" />
+      </div>
+      <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+    <button onclick="stopInterval()">Stop</button>
+    <div id="containerDiv"></div>
+  </body>
+  <script>
+    const newsList = [{ title: "title!!!", desc: "desc!!!!!" }];
+    const displayNews = () => {
+      document.getElementById("containerDiv").innerHTML = "";
+      newsList.forEach((n) => displayTodo(n));
+    };
+    function displayTodo({ title, desc }) {
+      const copiedTemplate = document
+        .getElementById("todoTemplate")
+        .content.cloneNode(true);
+      copiedTemplate.getElementById("todoTitle").innerText = title;
+      copiedTemplate.getElementById("toDoDesc").innerText = desc;
+      document.getElementById("containerDiv").appendChild(copiedTemplate);
+    }
+    const interval = setInterval(() => {
+      displayNews();
+    }, 1000);
+    function todoSubmit(event) {
+      event.preventDefault();
+      const title = document.getElementById("todoTitle").value;
+      const desc = document.getElementById("todoDesc").value;
+      // create object with the info
+      const news = {
+        title,
+        desc,
+      };
+      newsList.push(news);
+    }
+    function stopInterval() {
+      clearInterval(interval);
+    }
+  </script>
+</html>
