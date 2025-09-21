@@ -1,5 +1,5 @@
 //a
-function debounce(func) {
+function debounce(func) { //decorator function
   let timerId; // store timeout ID
 
   return function (...args) { //rest parameter, which collects all arguments passed to this function into an array called args. 
