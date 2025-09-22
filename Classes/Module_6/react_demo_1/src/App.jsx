@@ -1,6 +1,6 @@
 import { use, useState } from "react";
 import "./App.css";
-import FruitList from "./Components/FruitList";
+import FruitList from "./components/FruitList";
 function App() {
   const [fruits, setFruits] = useState([
     { id: 1, name: "Apple", color: "Red" },
