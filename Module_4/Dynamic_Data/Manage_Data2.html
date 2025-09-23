@@ -1,63 +1,90 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
-  </head>
-  <body>
-    <template id="todoTemplate">
-      <div class="card" style="width: 18rem">
-        <div class="card-body">
-          <h5 id="todoTitle"></h5>
-          <p id="toDoDesc"></p>
+    <head>
+        <meta charset="UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"/>
+        <title>News</title>
+    </head>
+    <body>
+<!--html template-->
+        <template id="news-template">
+            <div class="col-12 col-md-6 col-lg-3">
+                <div class="card h-100" style="margin:10px">
+                <div class="card-body">
+                        <h5 class="news-title">News title</h5>
+                        <p class="news-content card-text"></p> 
+                    </div>
+                </div>    
+            </div>
+        </template>
+<!-- form-->        
+        <form onsubmit="onSubmitClick(event)"> 
+            <div>
+                <label>Title</label>
+                <input name="title" id="formTitle" />
+                <label>Text</label>
+                <input name="content" id="formContent" />
+                <button type="submit">Save</button>
+            </div>
+        </form>
+
+        <button onclick="stopInterval()">Stop</button> <!--Stop: calls stopInterval() to stop the auto-refresh-->
+
+        <div class="container my-4">
+            <div id="news-list" class="row g-3"></div> 
+            
         </div>
-      </div>
-    </template>
-    <form onsubmit="todoSubmit(event)">
-      <div class="mb-3">
-        <label for="todoTitle" class="form-label">Title</label>
-        <input type="text" class="form-control" id="todoTitle" />
-      </div>
-      <div class="mb-3">
-        <label for="todoDesc" class="form-label">Description</label>
-        <input type="text" class="form-control" id="todoDesc" />
-      </div>
-      <button type="submit" class="btn btn-primary">Submit</button>
-    </form>
-    <button onclick="stopInterval()">Stop</button>
-    <div id="containerDiv"></div>
-  </body>
-  <script>
-    const newsList = [{ title: "title!!!", desc: "desc!!!!!" }];
-    const displayNews = () => {
-      document.getElementById("containerDiv").innerHTML = "";
-      newsList.forEach((n) => displayTodo(n));
-    };
-    function displayTodo({ title, desc }) {
-      const copiedTemplate = document
-        .getElementById("todoTemplate")
-        .content.cloneNode(true);
-      copiedTemplate.getElementById("todoTitle").innerText = title;
-      copiedTemplate.getElementById("toDoDesc").innerText = desc;
-      document.getElementById("containerDiv").appendChild(copiedTemplate);
-    }
-    const interval = setInterval(() => {
-      displayNews();
-    }, 1000);
-    function todoSubmit(event) {
-      event.preventDefault();
-      const title = document.getElementById("todoTitle").value;
-      const desc = document.getElementById("todoDesc").value;
-      // create object with the info
-      const news = {
-        title,
-        desc,
-      };
-      newsList.push(news);
-    }
-    function stopInterval() {
-      clearInterval(interval);
-    }
-  </script>
+
+        <script>
+            let news = [ 
+                { id: 1, title: 'Election Results', content: "Newly elected minister..." },
+                { id: 2, title: 'Sporting Success', content: "World Cup winners..." },
+                { id: 3, title: 'Tornado Warning', content: "Residents should prepare..." }
+            ];
+
+            function getNews() {
+                return new Promise((resolve) => { 
+                setTimeout(() => resolve(news), 200);
+                });
+            }
+
+            function addNews(item) {
+                const template = document.getElementById("news-template").content.cloneNode(true); 
+                template.querySelector(".news-title").innerText = item.title;
+                template.querySelector(".news-content").innerText = item.content;
+                document.querySelector("#news-list").appendChild(template); 
+            }
+
+            function renderNews(items) {
+                const list = document.getElementById('news-list');
+                list.replaceChildren(); 
+                items.forEach(addNews);
+            }
+            getNews().then(renderNews);
+
+            let refreshId = setInterval(async () => {
+                const items = await getNews();
+                renderNews(items); 
+            }, 5000);
+
+            function onSubmitClick(event) {
+                event.preventDefault();
+                const title = document.getElementById('formTitle').value
+                const content = document.getElementById('formContent').value
+
+                news.push({
+                  id: news.length + 1,
+                  title: title,
+                  content: content
+                });
+              document.getElementById('formTitle').value = ""
+              document.getElementById('formContent').value = ""
+            }
+
+            function stopInterval() {
+              clearInterval(refreshId)
+            }
+        </script>
+    </body>
 </html>

@@ -11,7 +11,7 @@
 cloneable DOM. Templates act as pieces of scaffolding that you can use and reuse throughout the lifetime of an app.
 To create templated content, declare some markup with placeholders for your data, and wrap it in the <template> element with a unique id:
     The <template> element is a blueprint for markup you plan to use later.
-
+The <template> tag contains markup that will not render until used.
 The browser parses its contents into a special DocumentFragment (accessible via .content), but it does not render them to the page, does not run scripts inside,
 and does not load images until you insert a clone into the live DOM.
 You typically: select it, clone it, fill its placeholders, append the clone to the page.-->
@@ -25,7 +25,7 @@ You typically: select it, clone it, fill its placeholders, append the clone to t
                 </div>    
             </div>
         </template>
-        <form onsubmit="onSubmitClick(event)">
+        <form onsubmit="onSubmitClick(event)"> <!--form for adding news, The onsubmit calls onSubmitClick(event), which prevents the default page reload and logs the input values to the console.-->
             <div>
                 <label>Title</label>
                 <input name="title" id="formTitle" />
@@ -35,21 +35,21 @@ You typically: select it, clone it, fill its placeholders, append the clone to t
             </div>
         </form>
         <div class="container my-4"> <!--target list, where items are inserted. Container centers content and caps its width.-->
-            <div id="news-list" class="row g-3"></div> <!--#news-list is a Bootstrap row. JavaScript will append columns (the cloned template) here.
+            <div id="news-list" class="row g-3"></div> <!--#news-list is a Bootstrap row. JavaScript will append columns (the cloned template) here. #news-list is the target container where dynamically cloned templates will be appended.
             g-3 adds consistent gutters between columns and rows.-->
         </div>
 
         <script>
-            let news = [
+            let news = [ //javascript data source, initial news data is stored in an array of objects
                 { id: 1, title: 'Election Results', content: "Newly elected minister..." },
                 { id: 2, title: 'Sporting Success', content: "World Cup winners..." },
                 { id: 3, title: 'Tornado Warning', content: "Residents should prepare..." }
             ];
 //Async fetch simulator. Returns a Promise that resolves to the news array after ~200 ms. This delay imitates network latency so you can practice asynchronous flo
                 function getNews() {
-                return new Promise((resolve) => {
-                setTimeout(() => resolve(news), 200);
-                });
+                    return new Promise((resolve) => { //Returns a Promise that resolves after 200 ms.
+                    setTimeout(() => resolve(news), 200);
+                    });
             }
             //Render one article.To render is to take data and draw it on the screen by creating DOM elements and inserting them into the document. In your code, 
             // rendering is the process that turns each news object ({ id, title, content }) into visible HTML (cards) inside #news-list
@@ -57,15 +57,15 @@ You typically: select it, clone it, fill its placeholders, append the clone to t
                 const template = document.getElementById("news-template").content.cloneNode(true); //Deep clone
                 template.querySelector(".news-title").innerText = item.title; //Fill the placeholders. Sets .news-title text from item.title
                 template.querySelector(".news-content").innerText = item.content;
-                document.querySelector("#news-list").appendChild(template);
+                document.querySelector("#news-list").appendChild(template); //Appends the filled template to #news-list.
             }
 //"#news-list" is a CSS selector string passed to document.querySelector(..# means “select by id” in CSS. So "#news-list" matches the element with id="news-list"
 
 //Render the whole list. Clear the container first, replaceChildren() removes all old nodes. item.forEach loop the data and call addNews        
             function renderNews(items) {
                 const list = document.getElementById('news-list');
-                list.replaceChildren();
-                items.forEach(addNews);
+                list.replaceChildren(); 
+                items.forEach(addNews); //Then loops through items and calls addNews for each one.
             }
         //First render on load
             getNews().then(renderNews);
