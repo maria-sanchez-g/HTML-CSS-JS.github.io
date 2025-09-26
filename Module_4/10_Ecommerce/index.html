@@ -45,6 +45,9 @@
                             <span id="cart-count" class="ms-auto">
                             🛒 Cart: 0
                             </span>
+                            <span id="cart-price" class="ms-auto">
+                               Price: 0
+                            </span>
                         </div>
                         <form class="d-flex" role="search"> 
                             <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"/>  <!-- Search input styled with Bootstrap. me-2 adds right margin. -->
@@ -101,7 +104,7 @@
 
             //container for the card template and deep clone
             function createCardFromTemplate (item) {
-                const template = document.getElementById('card-template'); //Gets the <template> element by its id
+                const template = document.getElementById('card-template'); //Gets the <template> element by its id.
                 const clone = template.content.cloneNode(true); //DeepClone
 
                 const img = clone.querySelector(".card-img-top"); //clone image
@@ -110,28 +113,28 @@
 
                 clone.querySelector(".card-title").innerText = item.title;
                 clone.querySelector(".card-text").innerText = item.description;
-                clone.querySelector(".card-price").innerText = `$${Number(item.price).toFixed(2)}`; //toFixed formats the number to two decimals
+                clone.querySelector(".card-price").innerText = `$${Number(item.price).toFixed(2)}`; //toFixed formats the number to two decimals.
 
                 const addButton = clone.querySelector(".btn.btn-primary"); //clone buttons
                 const removeButton = clone.querySelector(".btn.btn-outline-danger");
 
-                addButton.addEventListener("click", () => { //cart button add items
-                    cart.push({
+                addButton.addEventListener("click", () => { //cart button add items. Attaches a function that runs when the button is clicked.
+                    cart.push({ //adds a new item to the cart array, creates an object with title and price properties from the original item
                         title: item.title,
                         price: item.price,
                     });
                     console.log(cart);
-                    updateCartDisplay(), //refresh the display
+                    updateCartDisplay(cart) //refresh the display
                 });
 
                 removeButton.addEventListener("click", () => { //cart button delete items
                     const index = cart.findIndex(cartItem => cartItem.title === item.title);
                     if (index !== -1) {
                         cart.splice(index, 1);
+                        updateCartDisplay(cart)
                         console.log(cart);
                     } else {
                         console.log(cart);
-                        updateCartDisplay(),
                     }
                 });
 
@@ -140,8 +143,12 @@
 
             //update cart display
             function updateCartDisplay() {
-                const cartCount = document.getElementById("cart-count"); //Finds the HTML element with id="cart-items"
-            }
+                const totalPrice = cart.reduce((sum, cartItem) => {
+                return sum + cartItem.price;
+                }, 0);
+                document.getElementById("cart-count").textContent = `🛒 Cart: ${cart.length}`; //Finds the HTML element with id="cart-items"
+                document.getElementById("cart-price").textContent = `Price: $${totalPrice.toFixed(2)}`;
+            };
 
             //Card container
             function renderCards(items) { // Renders a list of items into #card-container
