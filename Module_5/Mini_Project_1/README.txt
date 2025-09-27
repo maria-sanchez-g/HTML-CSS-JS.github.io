@@ -3,7 +3,7 @@ Description: E-Commerce website – Cars. This website will have 5 cars availabl
 
 The webpage will have one pages:
 
-Home
+Index.html
 It will show 5 cars available with this information: Title, Photo, description, and price; and two buttons or delete from cart.
 At the top of the page, we will have a navigation bar with a search function.
 
