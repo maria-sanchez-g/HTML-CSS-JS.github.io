@@ -3,6 +3,7 @@ const router = express.Router(); //Router object created
 
 // define routes here
 router.get('/add', (req, res) => {
+  console.log(req.query)
   res.send('Add');
 });
 
