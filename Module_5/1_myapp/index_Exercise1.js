@@ -32,4 +32,8 @@ console.log(`Exercise 1 running at htpp://localhost:${port_1}`)
 // Sends responses — HTML, JSON, files, etc.
 // Supports middleware — extra functions that run before sending a response.
 
-//To start
+//Nodemon = Node Monitor
+
+// It is a utility that watches your files and automatically restarts your server whenever you make changes.
+
+// Instead of stopping and restarting your app manually every time you edit a file, Nodemon does it for you.
