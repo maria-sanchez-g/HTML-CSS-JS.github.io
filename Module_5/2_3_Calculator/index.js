@@ -1,10 +1,10 @@
 const express = require("express"); //Loads the Express library so you can create an HTTP server and define routes.
-const { add, minus } = require("./controller/calculator"); //Imports two functions (add, minus) from your controller module to keep business logic separate from routing.
+const { add, minus, divide, multiply } = require("./controller/calculator"); //Imports two functions (add, minus) from your controller module to keep business logic separate from routing.
 const app = express(); //Creates the Express application object. You will attach middleware and routes to this object.
 const port = 3000; //defines port number
 
 app.get("/", (req, res) => {
-  res.send("Hello World!");
+  res.send("Index page");
 }); //Registers a GET / route. When a browser requests the root path, the server responds with plain text “Hello World!”. If you just call localhost:3000, without the /add
 
 app.get("/add", (req, res) => {
@@ -13,7 +13,8 @@ app.get("/add", (req, res) => {
   if (!result) {
     res.send("please provide numbers");
   }
-  res.send({ result });
+  res.json({ result });
+  {result}
 });
 
 // Registers GET /add.

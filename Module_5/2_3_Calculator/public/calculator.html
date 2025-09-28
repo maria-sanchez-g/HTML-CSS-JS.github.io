@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ <title>Calculator Exercise 2 and 3</title>
+</head>
+<body>
+  <div>Result
+    <input id="result" type="number"/>
+  </div>
+  <form id="calc">
+    <label>
+        <input id="number" type="number"/>
+        <input id="number1" type="number"/>
+    </label>
+    <label for="op">Operation</label>
+      <select id="op">
+        <option value="add">Add</option>
+        <option value="minus">Minus</option>
+        <option value="multiply">Multiply</option>
+        <option value="divide">Divide</option>
+      </select>
+    </label>
+    <button type="submit">Submit</button>
+  </form>
+  </body>
+  
+  <script>
+
+    function seletOperation (op,a ,b) {
+      if (op === "add") return a + b;
+      else if (op === "minus") return a - b;
+      else if (op === "multiply") return a * b;
+      else if (op === "divide") {
+      }
+      return NaN;
+    }
+    return selectOperation
+    result = selectOperation
+    
+    fetch(`/calculator/add?num1=${num1}&num2=${num2}`) //fetch(...) sends a request to /calculator/add with query parameters num1 and num2.
+    .then(response => response.json()) //.then(response => response.json()) converts the response into a JavaScript object.
+    .then(data => { //.then(data => {...}) takes that object and updates the innerHTML of the element with id="result" to show the returned result.
+      document.getElementById("result").innerHTML =
+    data.result;     
+    })
+   </script>
+</html>
