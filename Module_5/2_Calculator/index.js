@@ -16,10 +16,12 @@ app.use((err, req, res, next) => {
 })
 
 //Start the server
+if (require.main === module && process.env.NODE_ENV !== "test") { //we needed this line for testing. // Start the server only outside of tests (and only when run directly)
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`); //Logs a message when the server starts.
 });
-
+}
+module.exports = app; //This is for testing, used in index.test.js
 
 //req.query is how we access GET data sent via the request query parameters.
 
