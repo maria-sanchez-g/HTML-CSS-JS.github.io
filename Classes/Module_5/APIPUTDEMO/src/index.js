@@ -32,13 +32,12 @@ app.get('/todos', (req, res) => {
 });
 
 app.put('/todos/:id', (req, res) => {
-    const {id} = req.params; //destructuring the id
+    const { id } = req.params; //destructuring the id
     const body = req.body;
-    const targetTodo = todoList.find((todo)=> todo.id ==id); //to find the target id inside the object
-    const updatedTodo = {...targetTodo, ...body}; //get a new object with the new information merged into body
+    const targetTodo = todoList.find((todo)=> todo.id == id); //to find the target id inside the object
+    const updatedTodo = {...targetTodo, ...body}; //get a new object with the new information merged into body, merge old and new files
     const targetIndex = todoList.indexOf(targetTodo); //we need to find the index so we can use the splice function
-    todoList.splice(targetIndex, 1, updatedTodo)
-   
+    todoList.splice(targetIndex, 1, updatedTodo) //update the list with the new element
     res.json(updatedTodo);
 });
 
