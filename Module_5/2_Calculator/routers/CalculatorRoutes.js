@@ -1,6 +1,6 @@
 const express = require('express'); // Loads the express library
 const router = express.Router(); // Creates a router object. Creates a mini-app (a router) where you define endpoints, then mount it in index.js
-const { add, minus, divide, multiply } = require('../controller/calculator'); //Imports your pure functions that perform the math.
+const { add, minus, divide, multiply } = require('../controllers/calculator'); //Imports your pure functions that perform the math.
 
 // Define a single dynamic route for all operations
 router.get('/:operation', (req, res) => { //dynamic route

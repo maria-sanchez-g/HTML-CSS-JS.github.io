@@ -9,6 +9,12 @@ app.use(express.static("public")); //Serves static files from the public folder 
 const calculatorRoutes = require("./routers/CalculatorRoutes"); //Imports the router from CalculatorRoutes.js.
 app.use("/calculator", calculatorRoutes); //Mounts the router so routes like /add, /minus are handled.
 
+//Global error-handling middleware. Error handler function from expressjs.com. The other way of handling the error in inside a function
+app.use((err, req, res, next) => {
+  console.error(err.stack)
+  res.status(500).send('Something broke!')
+})
+
 //Start the server
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`); //Logs a message when the server starts.
