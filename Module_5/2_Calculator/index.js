@@ -1,6 +1,12 @@
 const express = require("express"); //Loads the Express library.
+const swaggerUi = require("swagger-ui-express");
 const app = express(); //Creates an Express application.
 const port = 3000; //Defines the port where the server will listen.
+
+// Swagger (only if you have swagger.json)
+// const swaggerDocument = require("../swagger.json");
+// app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+
 
 //Middleware
 app.use(express.static("public")); //Serves static files from the public folder (HTML, CSS, JS).
