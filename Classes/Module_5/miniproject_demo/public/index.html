@@ -56,8 +56,8 @@
       crossorigin="anonymous"
     ></script>
     <script>
-      const todos = [
-      ];
+      let todos = [];
+
       function displayTodo({ title, desc, isCompleted }, index) {
         const copiedTemplate = document
           .getElementById("todoTemplate")
@@ -108,6 +108,22 @@
         todos.push(todo);
         renderTodos();
       }
+
+      async function getInitData(){
+        const response = await fetch('/api/todos');
+        const todoList = await response.json();
+        return todoList;
+      }
+
+      async function displayInitTodos(){
+        const initTodos = await getInitData();
+        todos = initTodos;
+        renderTodos();
+      }
+
+
+      displayInitTodos();
+      
     </script>
   </body>
 </html>
