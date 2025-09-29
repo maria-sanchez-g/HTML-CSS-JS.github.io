@@ -22,4 +22,3 @@ npm install express
 -to check in f12 / Network / click on todos, it opens headers on the right side
 -In preview you can see the data that has been provided
 
--

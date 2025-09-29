@@ -15,7 +15,7 @@
     </style>
   </head>
   <body>
-    <!-- Template for each cart item -->
+    <!-- Template for each cart item, we will clone it for every item -->
     <template id="todoTemplate">
       <div class="card">
         <div class="card-body">
@@ -30,7 +30,7 @@
         </div>
       </div>
     </template>
-
+<!--page layout and logo-->
     <div class="container py-3">
       <img src="./assets/logo.png" width="40" alt="logo" />
       <h1 class="mt-2">Car shop:</h1>
@@ -51,7 +51,7 @@
           </select>
         </div>
 
-        <!-- Description doubles as Cart total display -->
+        <!-- Cart total display -->
         <div class="mb-3">
           <label for="todoDesc" class="form-label">Cart total</label>
           <input
@@ -63,10 +63,10 @@
           />
         </div>
 
-        <!-- Optional: keep submit to save a summary row if you like -->
+        <!--Button to display cart -->
         <button type="submit" class="btn btn-primary">Cart</button>
       </form>
-
+        <!--container where cards are rendered -->
       <div class="row mt-4 g-3" id="todoContainer"></div>
 
       <!-- Your modal -->
@@ -117,7 +117,7 @@
       let todos = [];           // items returned from the server
       let cartTotal = 0;
 
-      const money = (n) =>
+      const money = (n) => //to get a properly formatted follar amount
         new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(n);
 
       // Map titles to prices for inference when price is not present on older rows
@@ -130,24 +130,25 @@
         if (typeof todo.price === "number") return todo.price;
         const title = (todo.title || "").toLowerCase();
         return TITLE_PRICE[title] || 0;
-      }
+      } //Looks up the price from a predefined object called TITLE_PRICE using the title as the key. If the title is not found in TITLE_PRICE, it returns 0 as a fallback.
 
-      function updateCartDisplay() {
+      function updateCartDisplay() { // Write the current total to the read-only "Cart total" input.
         document.getElementById("todoDesc").value = "Cart total: " + money(cartTotal);
       }
 
-      function recomputeCartTotal() {
+      function recomputeCartTotal() { //// Recalculate total from the "todos" array (used after deletes or initial load).
         cartTotal = todos.reduce((sum, t) => sum + priceOf(t), 0);
         updateCartDisplay();
       }
 
-      // -------------------------
+    
       // Rendering
-      // -------------------------
+      // Render a single item card using the <template>.
       function displayTodo(todo, index) {
         const { id, title, desc, isCompleted } = todo;
         const frag = document.getElementById("todoTemplate").content.cloneNode(true);
-
+        //frag is a reusable template clone that allows you to quickly build a fully populated to-do card (with title, description, price, and delete button) in memory, and then insert it into the page.
+        // Insert data into the cloned nodes.
         frag.querySelector("#todoTitle").innerText = title;
         frag.querySelector("#toDoDesc").innerText = desc || ("Price: " + money(priceOf(todo)));
         frag.querySelector("#isCompleted").checked = !!isCompleted;
@@ -183,21 +184,21 @@
               renderTodos();
             });
         });
-
+         // Wrap the card in a grid column and append into the grid container.
         const col = document.createElement("div");
         col.className = "col-auto";
         col.appendChild(frag);
         document.getElementById("todoContainer").appendChild(col);
       }
-
+      // Render all items: clear the container and draw each card.
       function renderTodos() {
         document.getElementById("todoContainer").innerHTML = "";
         todos.forEach((t, i) => displayTodo(t, i));
       }
 
-      // -------------------------
       // Add item to cart by selecting from Title
-      // -------------------------
+      // When the user chooses Tesla or BMW in the select,
+      // create a new item, send it to the backend, and update the UI.
       document.getElementById("todoTitleSelect").addEventListener("change", (e) => {
         const opt = e.target.selectedOptions[0];
         const title = opt?.dataset?.title;
@@ -205,7 +206,7 @@
         if (!title || !price) return;
 
         const todo = { title, desc: `Price: ${money(price)}`, price };
-
+        // Persist to backend, then update local state and UI.
         fetch("/api/todos", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -222,9 +223,8 @@
           .catch(console.error);
       });
 
-      // -------------------------
+      
       // Submit keeps a summary row (optional)
-      // -------------------------
       function todoSubmit(event) {
         event.preventDefault();
         const summary = { title: "Cart summary", desc: document.getElementById("todoDesc").value };
@@ -241,14 +241,13 @@
           .catch(console.error);
       }
 
-      // -------------------------
       // Initial load
-      // -------------------------
+      // Get all saved items from the backend.
       async function getInitData() {
         const r = await fetch("/api/todos");
         return r.json();
       }
-
+      // Load, compute total based on existing items, and render them.
       async function displayInitTodos() {
         todos = await getInitData();
         recomputeCartTotal();  // compute from existing items
@@ -257,7 +256,7 @@
 
       displayInitTodos();
 
-      // Show your modal on load (as you requested)
+      // Instantiate and show your Bootstrap modal on first load.
       const myModal = new bootstrap.Modal(document.getElementById("exampleModal"));
       myModal.show();
     </script>
