@@ -1,50 +1,125 @@
 {
-    "swagger": "2.0",
-    "info": {
-      "version": "1.0.0",
-      "title": "My Calculator Project",
-      "description": "My User Project Application API",
-      "license": {
-        "name": "MIT",
-        "url": "https://opensource.org/licenses/MIT"
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "My Calculator Project Kingsley",
+    "description": "My User Project Application API",
+    "license": {
+      "name": "MIT",
+      "url": "https://opensource.org/licenses/MIT"
+    }
+  },
+  "host": "localhost:3030",
+  "basePath": "/",
+  "tags": [
+    {
+      "name": "Calculator",
+      "description": "API for Calculus in the system"
+    }
+  ],
+  "schemes": ["http"],
+  "consumes": ["application/json"],
+  "produces": ["application/json"],
+  "paths": {
+    "/add": {
+      "get": {
+        "tags": ["Addition Service"],
+        "summary": "Add 2 numbers",
+        "parameters": [
+          {
+            "name": "num1",
+            "in": "query",
+            "description": "The First Number"
+          },
+          {
+            "name": "num2",
+            "in": "query",
+            "description": "The Second number"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "This service allows you to add two numbers together"
+          }
+        }
       }
     },
-    "host": "localhost:3030",
-    "basePath": "/",
-    "tags": [
-      {
-        "name": "APIPUTDEMO",
-        "description": "API module 5"
-      }
-    ],
-    "schemes": ["http"],
-    "consumes": ["application/json"],
-    "produces": ["application/json"],
-    "paths": {
-        "/add": {
-            "get": {
-                "tags": [
-                    "Addition Service"
-                ],
-                "summary": "Add 2 numbers",
-                "parameters": [
-                    {
-                        "name": "num1",
-                        "in": "query",
-                        "description": "The First Number"
-                    },
-                    {
-                        "name": "num2",
-                        "in": "query",
-                        "description": "The Second number"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "This service allows you to add two numbers together"
-                    }
+    "/minus": {
+      "post": {
+        "tags": ["Calculator"],
+        "summary": "Subtract two numbers",
+        "description": "Subtract num2 from num1",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Numbers to subtract",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "num1": {
+                  "type": "number",
+                  "description": "The first number"
+                },
+                "num2": {
+                  "type": "number",
+                  "description": "The second number"
                 }
+              },
+              "required": ["num1", "num2"]
             }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Result of subtraction"
+          }
         }
+      }
+    },
+    "/todos/{id}": {
+      "put": {
+        "tags": ["Todos"],
+        "summary": "Update a todo item",
+        "description": "Update the todo item with the given ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of the todo to update",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Fields to update in the todo item",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "type": "string",
+                  "description": "Title of the todo"
+                },
+                "desc": {
+                  "type": "string",
+                  "description": "Description of the todo"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Updated todo item"
+          },
+          "404": {
+            "description": "Todo not found"
+          }
+        }
+      }
     }
- }
+  }
+}
