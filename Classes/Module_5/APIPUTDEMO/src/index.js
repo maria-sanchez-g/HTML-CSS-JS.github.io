@@ -1,4 +1,7 @@
 const express = require("express")
+const swaggerUi = require('swagger-ui-express');
+swaggerDocument = require('./_swagger.json');
+
 const app = express();
 app.use(express.json());
 //we need this to add the JSON body parser to Express.
@@ -7,6 +10,19 @@ app.use(express.json());
 // Puts that object on req.body for your route handlers.
 // Without it, req.body is undefined for JSON requests.
 //Your API accepts data in the request body as JSON (typical for POST/PUT/PATCH)
+
+app.use('/api-docs',swaggerUi.serve,swaggerUi.setup(swaggerDocument));
+
+app.get("/add", (req, res) => { //app.get() tells Express to listen for HTTP GET requests."/add" is the endpoint path (so requests to http://localhost:3030/add will trigger this code).
+  const num1 = parseFloat(req.query.num1); //req.query contains values passed in the URL after the ?
+  const num2 = parseFloat(req.query.num2); //parseFloat() converts those strings into numbers so you can do math.
+
+  if (isNaN(num1) || isNaN(num2)) { //isNaN() checks if the value is Not a Number.
+    return res.status(400).json({ error: "Both num1 and num2 must be numbers" }); //If either num1 or num2 is missing or not a number, the function stops (return) and sends back: an error message
+  }
+
+  res.json({ result: num1 + num2 }); //sends back the result
+});
 
 const port = 3030;
 const todoList = [
