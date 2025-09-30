@@ -34,3 +34,5 @@ module.exports = { // Export all functions so other files (e.g., controllers) ca
   updateTodo,
   getTodoById,
 };
+
+//Services/todoServices.js (service): reads and mutates the in-memory todoList array (your temporary database).
