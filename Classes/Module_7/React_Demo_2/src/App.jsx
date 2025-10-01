@@ -4,6 +4,8 @@ import ClockDisplay from './Components/ClockDisplay';
 import ActivityFinder from './Components/ActivityFinder';
 import RefCounter from './Components/RefCounter';
 import VideoPlayer from './Components/VideoPlayer';
+import ReducerCounter from './Components/ReducerCounter';
+import PostListReducer from './Components/PostListReducer';
 import './App.css'
 
 function App() {
@@ -14,6 +16,8 @@ function App() {
   <ActivityFinder></ActivityFinder>
   <RefCounter></RefCounter>
   <VideoPlayer></VideoPlayer>
+  <ReducerCounter></ReducerCounter>
+  <PostListReducer></PostListReducer>
     </>
   )
 }
