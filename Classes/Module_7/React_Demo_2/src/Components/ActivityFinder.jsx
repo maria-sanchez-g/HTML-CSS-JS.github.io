@@ -1,27 +1,28 @@
 import { useState, useEffect } from "react";
+import { useData } from "../Utilities/useData";
+import { useUserContext } from "../Context/UserContext";
+
 export default function ActivityFinder() {
   // Fetches a random activity
-  const [participants, setParticipants] = useState(1);
-  const [activity, setActivity] = useState("");
+  const [participants, setParticipants] = useState(undefined);
+  const { currentUser } = useUserContext();
+  const [url, setUrl] = useState(
+    "https://bored.api.lewagon.com/api/activity?participants=1"
+  );
+  const activity = useData(url);
   useEffect(() => {
-    fetch(
-      "https://bored.api.lewagon.com/api/activity?" +
-        "participants=" +
-        participants
-    )
-      .then((response) => response.json())
-      .then((json) => {
-        setActivity(json.activity);
-      });
-    fetch("https://goweather.herokuapp.com/weather")
-      .then((response) => response.json())
-      .then((json) => {
-        console.log(json);
-      });
+    console.log("participants", participants);
+    if (participants)
+      setUrl(
+        "https://bored.api.lewagon.com/api/activity?" +
+          "participants=" +
+          participants
+      );
   }, [participants]);
   return (
     <div className="ActivityFinder componentBox">
-      <h3>Activity Finder</h3>
+      <div>{currentUser && currentUser.firstName}</div>
+      <h3>Activity Finder </h3>
       <label>
         Choose number of participants:
         <select
@@ -35,7 +36,7 @@ export default function ActivityFinder() {
       </label>
       <div>
         <strong>Suggested Activity: </strong>
-        {activity}
+        {activity && activity.activity}
       </div>
     </div>
   );
