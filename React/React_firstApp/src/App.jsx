@@ -6,9 +6,15 @@ import './App.css'
 function App() {
   return (
     <>
-      <Greeting></Greeting>
+      <Greeting name="Edna"Greeting/>
+      <Greeting name= "Maria"> Welcome to your first React app! </Greeting>
     </>
   )
 }
 
 export default App
+
+
+//name="Edna" is a normal prop (key/value pair).
+//Welcome to your first React app! is the children.
+//Using children makes your components more dynamic and reusable.
