@@ -1,7 +1,9 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
+import { TodoContext } from "../Context/TodoContext";
 
-export default function TodoSubmitForm({ addTodo }) {
+export default function TodoSubmitForm() {
   const [originFormData, setOriginFormData] = useState({ title: "", desc: "" });
+  const { addTodo } = useContext(TodoContext);
   const todoSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.target);

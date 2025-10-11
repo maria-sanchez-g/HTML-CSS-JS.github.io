@@ -40,3 +40,10 @@
 .read-the-docs {
   color: #888;
 }
+
+.componentBox {
+  border: 1px solid #aaa;
+  margin: 1em;
+  padding: 1em;
+  text-align: center;
+}

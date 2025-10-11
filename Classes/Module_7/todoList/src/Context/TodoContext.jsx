@@ -1,10 +1,9 @@
-import { useState } from "react";
-import TodoList from "./Components/TodoList";
-import TodoSubmitForm from "./Components/TodoSubmitForm";
+import { createContext, useState } from "react";
+// 1. Create the context
+export const TodoContext = createContext();
 
-function App() {
+export const TodoProvider = (props) => {
   const [todos, setTodos] = useState([]);
-  // const [props, aFunction] = useInput();
 
   const addTodo = (todo) => {
     const currentMaxId =
@@ -28,19 +27,8 @@ function App() {
   };
 
   return (
-    <>
-      <div className="container">
-        <div className="row">
-          <TodoSubmitForm addTodo={addTodo} />
-          <TodoList
-            todoList={todos}
-            removeTodo={removeTodo}
-            updateTodo={updateTodo}
-          ></TodoList>
-        </div>
-      </div>
-    </>
+    <TodoContext.Provider value={{ todos, addTodo, removeTodo, updateTodo }}>
+      {props.children}
+    </TodoContext.Provider>
   );
-}
-
-export default App;
+};

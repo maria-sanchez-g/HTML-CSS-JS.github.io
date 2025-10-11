@@ -1,5 +1,5 @@
 import { Routes, Route } from "react-router-dom";
-import HomePage from "./Pages/HomePage";
+import Homepage from "./Pages/HomePage";
 import AboutPage from "./Pages/AboutPage";
 import DashboardPage from "./Pages/DashboardPage";
 import DashboardMessages from "./Pages/DashboardMessages";
@@ -17,14 +17,8 @@ export default function AppRoutes(props) {
       <Route path="login" element={<Login {...props} />} />
       <Route index element={<Homepage {...props} />} />
 
-      <Route
-        path="dash"
-        element={
-          <ProtectedRoute>
-            <DashboardPage {...props} />
-          </ProtectedRoute>
-        }
-      >
+      <Route path="dash" element={<ProtectedRoute />}>
+        <Route index element={<DashboardPage {...props} />} />
         <Route path="messages" element={<DashboardMessages />} />
         <Route path="tasks" element={<DashboardTasks />} />
       </Route>

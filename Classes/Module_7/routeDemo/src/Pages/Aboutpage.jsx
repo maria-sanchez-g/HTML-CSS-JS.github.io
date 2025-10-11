@@ -1,5 +1,4 @@
-export default function Aboutpage() {
-  // Save in pages/Homepage.jsx
+export default function AboutPage() {
   return (
     <div className="Homepage">
       <h1>About</h1>

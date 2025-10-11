@@ -1,5 +1,9 @@
-export default function TodoItem({ todo, index, removeTodo, updateTodo }) {
-  
+import { useContext } from "react";
+
+import { TodoContext } from "../Context/TodoContext";
+
+export default function TodoItem({ todo, index }) {
+  const { removeTodo, updateTodo } = useContext(TodoContext);
   const textDecorationStyle = {
     textDecoration: todo.isCompleted ? "line-through" : "",
   };
