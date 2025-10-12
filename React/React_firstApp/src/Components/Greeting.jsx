@@ -21,7 +21,7 @@ function Greeting({ name = "World", children }) {
 
 export default Greeting; //I need to export the function to the file App.js
 
-
+//Greeting is the component, it receives props (name and children) as parameters
 // Props (short for properties) are a way to send data from a parent component to a child component.
 // You can think of them as arguments that you pass into a function.
 // props is an object containing all the data you send to the component.
@@ -33,4 +33,9 @@ export default Greeting; //I need to export the function to the file App.js
 
 // In React, every component can wrap content inside its opening and closing tags.last
 // That content — whatever is placed between those tags — is automatically passed to the component as a special prop called children.
-//Using children makes your components more dynamic and reusable.
+// Using children makes your components more dynamic and reusable.
+
+// <Composition>
+// When components render other components in their output, this is called composition. 
+// Composition allows us to build more complex components by combining simpler ones. This approach enables code reusability and makes 
+// managing and maintaining large applications easier

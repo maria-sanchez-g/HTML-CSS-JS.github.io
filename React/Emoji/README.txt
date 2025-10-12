@@ -58,3 +58,23 @@ Imports usually go at the top of a file. Named imports need to use curly braces.
 When components render other components in their output, this is called composition. 
 Composition allows us to build more complex components by combining simpler ones. This approach enables code reusability and makes 
 managing and maintaining large applications easier*/}
+
+Hooks:
+
+A React component can access dynamic information in two ways: props and state.
+Unlike props, which are passed into a component, a component’s state is defined inside itself.
+To  make a component have state, we use the useState hook.
+
+useState is a function that returns two values: 
+The first is the value to be stored in state - a dynamic value that will change over time
+The second is a function we can call to update the first value.
+We use the value, setvalue naming convention for these two variables.
+
+State management in React allows us to do two important things, represented by the two variables returned from the useState hook:
+1. Remember the values needed to display each component at any point in time - a snapshot of that component.
+2. Update these values - primarily through user interaction.
+These two are closely linked. Whenever the snapshot for a component (all of its dynamic state values) changes, the component 
+needs to re-render to reflect this, and remember the new snapshot. This is a three-step process:
+1. A change in state is triggered by some event, eg. a mouse click
+2. All state changes are bundled and rendered in React’s virtual DOM
+3. React compares its DOM to the actual DOM and updates as needed.
