@@ -1,0 +1,205 @@
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Todo demo</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
+      crossorigin="anonymous"
+    />
+  </head>
+  <style>
+    .todoCompleted {
+      text-decoration: line-through;
+    }
+  </style>
+  <body>
+    <template id="categoryTemplate"></template>
+    <template id="todoTemplate">
+      <div class="card" style="width: 18rem">
+        <div class="card-body">
+          <h5 id="todoTitle"></h5>
+          <p id="toDoDesc"></p>
+          <div class="form-check">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              value=""
+              id="isCompleted"
+            />
+            <label class="form-check-label">Is completed</label>
+          </div>
+          <button id="toDoDel" class="btn btn-danger">Del</button>
+          <button id="toDoUpdate" class="btn btn-primary">Update</button>
+        </div>
+      </div>
+    </template>
+    <div class="container">
+      <img src="./assets/logo.png" width="40px" />
+      <h1>My todo list:</h1>
+      <form onsubmit="todoSubmit(event)">
+        <div class="mb-3">
+          <label for="todoTitle" class="form-label">Title</label>
+          <input type="text" class="form-control" id="todoTitle" />
+        </div>
+        <div class="mb-3">
+          <label for="todoDesc" class="form-label">Description</label>
+          <input type="text" class="form-control" id="todoDesc" />
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </form>
+      <div class="row" id="todoContainer"></div>
+      <div
+        class="modal fade"
+        id="exampleModal"
+        tabindex="-1"
+        aria-labelledby="exampleModalLabel"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1 class="modal-title fs-5" id="exampleModalLabel">
+                Modal title
+              </h1>
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+            <div class="modal-body">...</div>
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-secondary"
+                data-bs-dismiss="modal"
+              >
+                Close
+              </button>
+              <button type="button" class="btn btn-primary">
+                Save changes
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+      crossorigin="anonymous"
+    ></script>
+    <script>
+      let todos = [];
+
+      function displayTodo({ id, title, desc, isCompleted }, index) {
+        const copiedTemplate = document
+          .getElementById("todoTemplate")
+          .content.cloneNode(true);
+        copiedTemplate.getElementById("todoTitle").innerText = title;
+        copiedTemplate.getElementById("toDoDesc").innerText = desc;
+        copiedTemplate.getElementById("isCompleted").checked = isCompleted;
+        if (isCompleted) {
+          copiedTemplate
+            .getElementById("todoTitle")
+            .classList.add("todoCompleted");
+          copiedTemplate
+            .getElementById("toDoDesc")
+            .classList.add("todoCompleted");
+        }
+
+        copiedTemplate
+          .getElementById("toDoDel")
+          .addEventListener("click", () => {
+            fetch(`/api/todos/${id}`, {
+              method: "Delete",
+            })
+              .then((response) => {
+                todos.splice(index, 1);
+                renderTodos();
+              })
+              .catch((e) => {
+                console.log(e);
+              });
+          });
+
+        const isCompletedFunction = (event) => {
+          const isCompleted = event.target.checked;
+          fetch(`/api/todos/${id}`, {
+            headers: {
+              "Content-Type": "application/json",
+            },
+            method: "Put",
+            body: JSON.stringify({ title, desc, isCompleted }),
+          })
+            .then((response) => response.json())
+            .then((data) => {
+              todos.splice(index, 1, data);
+              renderTodos();
+            });
+        };
+
+        copiedTemplate
+          .getElementById("isCompleted")
+          .addEventListener("click", isCompletedFunction);
+
+        document.getElementById("todoContainer").appendChild(copiedTemplate);
+      }
+
+      function renderTodos() {
+        document.getElementById("todoContainer").innerHTML = "";
+        todos.forEach((todo, index) => {
+          displayTodo(todo, index);
+        });
+      }
+
+      function todoSubmit(event) {
+        event.preventDefault();
+        //collect info from form
+        const title = document.getElementById("todoTitle").value;
+        const desc = document.getElementById("todoDesc").value;
+        // create object with the info
+        const todo = {
+          title,
+          desc,
+        };
+
+        fetch("/api/todos", {
+          headers: {
+            "Content-Type": "application/json",
+          },
+          method: "Post",
+          body: JSON.stringify(todo),
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            todos.push(data);
+            renderTodos();
+          });
+      }
+
+      async function getInitData() {
+        const response = await fetch("/api/todos");
+        const todoList = await response.json();
+        return todoList;
+      }
+
+      async function displayInitTodos() {
+        const initTodos = await getInitData();
+        todos = initTodos;
+        renderTodos();
+      }
+
+      displayInitTodos();
+      const myModal = new bootstrap.Modal(
+        document.getElementById("exampleModal")
+      );
+
+      myModal.show();
+    </script>
+  </body>
+</html>
