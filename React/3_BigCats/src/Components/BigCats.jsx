@@ -1,6 +1,9 @@
 import SingleCat from "./SingleCat";
 import { useState } from 'react'
 
+
+
+
 const Initial_Cats = [
   { id: 1, name: 'Cheetah', latinName: 'Acinonyx jubatus' },
   { id: 2, name: 'Cougar', latinName: 'Puma concolor' },
