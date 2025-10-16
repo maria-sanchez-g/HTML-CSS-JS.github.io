@@ -1,11 +1,11 @@
 
 function SingleCat({name, latinName, image}) {
     return (
-        <li className="single-cat">
+        <div className="single-cat">
             <p>{name}</p>
             <p>{latinName}</p>
             <img src={image} alt={name} width="150" />
-        </li>
+        </div>
     );
 }
 
