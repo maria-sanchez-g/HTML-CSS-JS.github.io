@@ -1,5 +1,5 @@
 import { useState } from "react"; //You need useState in this component because the component must remember which currency the user has selected in the <select> dropdown
-import { useBitcoinPrice } from "./useBitcoinPrice";
+import useBitcoinPrice from "../Hooks/useBitcoinPrice";
 
 const currencies = ["USD", "AUD", "NZD", "GBP", "EUR", "SGD"]; //It is the list of allowed currencies for the dropdown.
 
@@ -17,6 +17,7 @@ function BitcoinRates() { // This is a React component. It will render the UI fo
   // price -> the numeric Bitcoin price for that currency, or null if not loaded yet
   // error -> an error message if something went wrong
   // Every time "currency" changes, the hook will fetch again for the new currency.
+  // I need this line because it is how your component gets the latest Bitcoin price, loading state, and error state from your custom hook called useBitcoinPrice.
 
   const options = currencies.map((curr) => (  // build <option> list for the dropdown
     <option value={curr} key={curr}>
@@ -26,6 +27,7 @@ function BitcoinRates() { // This is a React component. It will render the UI fo
   // We loop over each currency code in the array and return an <option> for it.
   // key={curr} gives React a stable ID for each option in the list.
   // value={curr} sets what value will be sent when the user picks that option.
+  // curr is a variable name
 
   return (  // The component returns JSX. This is what will actually be rendered on the page.
     <div className="BitcoinRates componentBox">
