@@ -1,33 +1,22 @@
-import { useState } from "react";
+import { useMood } from "../Context/MoodContext";
+//You import the helper hook you created earlier. This hook gives you direct access to the mood value and the toggleMood function that were provided by the MoodProvider.
 
-function Emoji () {
-    const [mood, setMood] = useState("happy");
+    function Emoji () {
+        const  { mood, toggleMood } = useMood(); // Use the custom hook to access the shared state and function
 
-    function toggleMood() {
-        if (mood === "happy") {
-            setMood("sad")
-        } else {
-            setMood("happy");
-        }
-    }
+    //It extracts (destructures) the two values that the Provider shared:
+    //mood → the current mood state.
+    //toggleMood → the function to change the mood.
 
-    return (
+        return (
         <div className="MoodChanger componentBox">
+            <h3>Emoji</h3>
             Current Mood: {mood}
-            <button on onClick={toggleMood}>Change Mood</button>
+            <button onClick={toggleMood}>Change Mood</button>
         </div>
-    );
-}
+        )
+    }
+    
+    export default Emoji;
 
-
-export default Emoji;
-
-// const [mood, setMood] = useState("happy"); You create a state variable called mood and set its initial value to the happy emoji
-
-// mood → stores the current emoji. setMood() → changes it.
-
-// function toogleMood checks the current mood:
-// If it is happy, it changes it to sad. Otherwise, it changes back to happy.
-// So each time you click, it toggles between both emojis.
-
-//When you click this button, React runs the toggleMood() function, updates the state, and re-renders the new emoji.
+    //Emoji should no longer manage its own mood. Emoji should only read and update mood through context
