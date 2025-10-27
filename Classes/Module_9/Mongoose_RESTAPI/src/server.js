@@ -1,5 +1,6 @@
 const express = require("express");
 let userRoutes = require('./routes/userRoutes');
+let postRoutes = require('./routes/userRoutes');
 const app = express();
 require("dotenv").config();
 require("./db"); //to connect to the database
@@ -11,6 +12,7 @@ app.get("/", (req, res) => {
 });
 
 app.use("/api/users", userRoutes);
+app.use("/api/posts", userRoutes);
 // set port, listen for requests
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
