@@ -31,8 +31,4 @@ export default function CustomCard({ title, children }) {
       </CardActions>
     </Card>
   );
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> 711dc767046a76b6559ad28849641fb2150aa109
