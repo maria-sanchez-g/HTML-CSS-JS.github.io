@@ -1,41 +1,45 @@
-import { useContext } from "react";
-import { NavLink } from 'react-router-dom'
-import { useTheme } from "../Context/ThemeContext"
+// Components/NavBar.jsx
+import * as React from "react";
+import AppBar from "@mui/material/AppBar";
+import Box from "@mui/material/Box";
+import Toolbar from "@mui/material/Toolbar";
+import Typography from "@mui/material/Typography";
+import Button from "@mui/material/Button";
+import IconButton from "@mui/material/IconButton";
+import MenuIcon from "@mui/icons-material/Menu";
+import { useNavigate } from "react-router-dom";
 
+export default function NavBar() {
+  const navigate = useNavigate();
 
-export default function NavBar () {
-    const { theme, toggleTheme } = useTheme(); // Access theme data
-    // const { currentUser, logOutUser } = useUser();    // Access user info
   return (
-    <nav
-    className="NavBar"
-      style={{
-        backgroundColor: theme.background,
-        color: theme.foreground,
-        display: "flex",
-        justifyContent: "space-between",
-        alignItems: "center",
-        padding: "12px 24px"
-      }}
-      >
-    <div className="menu"
-          style={{
-          display: "flex",
-          alignItems: "center",
-          gap: "40px", // <-- space between Home, Profile, Login
-        }}
-    >
-      {/* Navigation links */}
-      <NavLink to="/home">Home</NavLink>
-      <NavLink to="/home/profile">Profile</NavLink>
-      <NavLink to="/login">Login</NavLink>
-    </div>
-    <div style={{ display: "flex", alignItems: "center", gap: "30px" }}>
-        {/* Theme toggle */}
-        <button onClick={toggleTheme}>
-          Switch to {theme.mode === "light" ? "Dark" : "Light"} Mode
-        </button>
-    </div>
-    </nav>
+    <Box sx={{ flexGrow: 1 }}>
+      <AppBar position="static" color="primary">
+        <Toolbar>
+          <IconButton
+            size="large"
+            edge="start"
+            color="inherit"
+            aria-label="menu"
+            sx={{ mr: 2 }}
+          >
+            <MenuIcon />
+          </IconButton>
+          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+            My App
+          </Typography>
+          <Button color="inherit" onClick={() => navigate("/")}>
+            Home
+          </Button>
+          <Button color="inherit" onClick={() => navigate("/profile")}>
+            Profile
+          </Button>
+          <Button color="inherit" onClick={() => navigate("/login")}>
+            Login
+          </Button>
+        </Toolbar>
+      </AppBar>
+    </Box>
   );
 }
+

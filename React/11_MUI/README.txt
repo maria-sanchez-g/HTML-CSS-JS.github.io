@@ -327,3 +327,19 @@ Ex: import NavBar, (withouth {})
 MUI library
 
 npm install @mui/material @emotion/react @emotion/styled
+
+1- import this in main.jsx
+
+import { ThemeProvider, createTheme } from '@mui/material/styles';
+import CssBaseline from '@mui/material/CssBaseline';
+
+-look for navbars in MUI page, replace the code in NavBar.jsx
+
+-create new file called theme, add a file called muiTheme.js
+The custom theme connects everything
+When you use createTheme() and ThemeProvider, you build a design “language” for your app:
+then in main.js i need to add
+import { makeAppTheme } from "./theme/muiTheme";
+ and 
+const { theme } = useTheme();
+const muiTheme = makeAppTheme(theme);
