@@ -1,7 +1,7 @@
-import { useUser } from "../Context/userContext"; // imports information from the custom hook from userContext. Things like the functions updateUser or logOutUser.
+import { useUser } from "../Context/UserContext"; // imports information from the custom hook from userContext. Things like the functions updateUser or logOutUser.
 import { useState } from "react"; // I need useState because Temporary, inside one component
 
-export default function loginForm() {
+export default function LoginForm() {
 const { currentUser, updateUser, logOutUser } = useUser();
 //You can read this like:
 // “Call useUser(), take the returned object, and extract three specific properties from it.”

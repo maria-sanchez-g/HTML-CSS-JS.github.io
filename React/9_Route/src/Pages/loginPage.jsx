@@ -1,6 +1,6 @@
-import loginForm from "../Components/loginForm";
+import LoginForm from "../Components/LoginForm";
 
-export default function loginPage() {
+export default function LoginPage() {
   return (
     <div className="LoginPage componentBox">
       <h1>Login</h1>
