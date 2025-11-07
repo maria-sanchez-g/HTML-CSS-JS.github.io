@@ -1,4 +1,4 @@
-Part One - Create folder Back End (Server that will provide data)
+PHASE ONE - Create folder Back End (Server that will provide data)
 
 1- Install dependencies
 npm init -y
@@ -8,7 +8,7 @@ npm install nodemon
 2 - Create structure
 Folders:
 -public
---index.html
+--index.html //not needed, When you first ran npm init or used some template, it created a basic folder structure with a public folder for static files.
 -src
 --app.js
 --server.js
@@ -236,3 +236,125 @@ app.listen(PORT, () => { // Start the HTTP server and log a message once it is r
 npm run dev
 http://localhost:3000/api/products
 http://localhost:3000/api/cart
+
+
+PHASE 2 - FRONT END (React + Vite + MUI + Router + Axios)
+
+install:
+npm create vite@latest .
+npm install react-router-dom axios @mui/material @mui/icons-material @emotion/react @emotion/styled
+
+
+1- create project structure
+src
+-Components
+--Navbar.jsx
+--ProductGrid.jsx
+--ProductCard.jsx
+--LoginFomr.jsx
+-Pages
+--About.jsx
+--Cart.jsx
+--Home.jsx
+--Login.jsx
+-Context
+--CartContext.jsx
+--ProductContext.jsx
+--UserContext.jsx
+-Routes
+--AppRoutes.jsx
+-Theme
+--MuiTheme.js
+-API
+--axios.js
+
+Add <BrowserRouter> at the top level in main.js, with <App/> in the middle.
+Add import { BrowserRouter } from 'react-router-dom' in main.js
+
+2- AppRoutes.jsx
+3- App.jsx
+update and include
+
+import Navbar from "./Components/Navbar.jsx";
+import AppRoute from "./Routes/AppRoute.jsx";
+
+export default function App() {
+  return (
+    <>
+      <Navbar />
+      <AppRoute />
+    </>
+  );
+}
+
+
+4- Update main.jsx
+import { StrictMode } from 'react'
+import { createRoot } from 'react-dom/client'
+import './index.css'
+import App from './App.jsx'
+import { BrowserRouter } from "react-router-dom";
+import { ThemeProvider, createTheme } from "@mui/material/styles";
+import CssBaseline from "@mui/material/CssBaseline";
+
+const theme = createTheme(); //This function creates a theme object. A theme defines global visual settings for your application.
+
+createRoot(document.getElementById('root')).render(
+  <StrictMode>
+  <ThemeProvider theme={theme}>
+      <CssBaseline />
+    <BrowserRouter>
+    <App />
+  </BrowserRouter>
+   </ThemeProvider>
+  </StrictMode>,
+)
+
+
+// | Code            | What it does                                         |
+// | --------------- | ---------------------------------------------------- |
+// | `createTheme()` | Creates global design settings                       |
+// | `ThemeProvider` | Makes those settings available to all MUI components |
+// | `CssBaseline`   | Resets browser CSS so everything looks uniform       |
+
+5- axios.js (Single place to change the backend URL)
+
+import axios from "axios";
+
+// Point to your backend
+const api = axios.create({
+  baseURL: "http://localhost:3000/api",
+  headers: { "Content-Type": "application/json" },
+});
+
+export default api;
+
+6- ProductContext.jsx / Cart Context
+
+update app.jsx
+
+import { useState } from 'react'
+import Navbar from "./Components/Navbar.jsx";
+import AppRoute from "./Routes/AppRoute.jsx";
+import { ProductProvider } from "./Context/ProductContext.jsx";
+import { CartProvider } from "./Context/CartContext.jsx";
+import './App.css'
+
+function App() {
+  
+  return (
+    <>
+    <ProductProvider>
+      <CartProvider>
+        <Navbar />
+        <AppRoute />
+      </CartProvider>
+    </ProductProvider>
+    </>
+  )
+}
+
+export default App
+
+7-Navbar
+

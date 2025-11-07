@@ -19,8 +19,10 @@ const todoReducer = (state, action) => {
   }
 };
 export const TodoContext = createContext();
+
 export const TodoProvider = (props) => {
   const [todos, dispatch] = useReducer(todoReducer, []);
+  
   useEffect(() => {
     const initData = async () => {
       const response = await axios.get("api/todos");
