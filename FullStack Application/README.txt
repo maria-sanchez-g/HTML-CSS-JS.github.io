@@ -268,11 +268,53 @@ src
 -API
 --axios.js
 
-Add <BrowserRouter> at the top level in main.js, with <App/> in the middle.
-Add import { BrowserRouter } from 'react-router-dom' in main.js
+IMPORTANT
+A path is simply the URL location your app navigates to — for example /home, /login, /home/profile.
+In React Router, you can navigate or link in two ways:
+Type	Starts With /	Example	Interpreted As
+Absolute path	✅ Yes	/login	Go to exactly /login, no matter where you are
+Relative path	❌ No	login	Add login to the current URL path
+
+🧩 Example. Let’s say you are currently at /home.
+
+Code	            What it does	          Result
+navigate('/login')	Absolute — starts from the root	Goes to /login ✅
+navigate('login')	Relative — adds onto current path	Goes to /home/login 🚫
+navigate('profile')	Relative — adds onto /home	Goes to /home/profile ✅
+navigate('/home/profile')	Absolute — same result	Goes to /home/profile ✅
+
+Use absolute paths (with /) when the target is outside the current section.
+→ Example: navigating from /home to /login.
+
 
 2- AppRoutes.jsx
+
+// TEMPLATE
+// import { Router, Routes, Route, Navigate } from "react-router-dom";
+// import Home from "./pages/Home";
+// import About from "./pages/About";
+// import Contact from "./pages/Contact";
+// import NotFound from "./pages/NotFound";
+
+// function AppRoutes() {
+//   return (
+//     <Routes>
+//       <Route path="/" element={<Navigate to="/home" replace />} /> {/* Redirect root (/) to /home */}
+//       <Route path="/home" element={<HomePage />}> {/* Parent route for Home with nested children */}
+//         <Route index element={<div>Welcome to Home</div>} /> {/* Default child for /home */}
+//         <Route path="profile" element={<ProfilePage />} />{/* Nested child route for /home/profile */}
+//      </Route>
+  
+//       <Route path="/login" element={<LoginPage />} /> {/* Independent Login route */}
+//       <Route path="*" element={<PageNotFound />} /> {/* 404 fallback */}
+//     </Routes>
+//   );
+// }
+
+// export default AppRoutes;
+
 3- App.jsx
+Defines layout and structure, Ensures NavBar + routes display correctly
 update and include
 
 import Navbar from "./Components/Navbar.jsx";
@@ -289,6 +331,10 @@ export default function App() {
 
 
 4- Update main.jsx
+
+Add <BrowserRouter> at the top level in main.js, with <App/> in the middle.
+Add import { BrowserRouter } from 'react-router-dom' in main.js
+
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import './index.css'
@@ -322,20 +368,50 @@ createRoot(document.getElementById('root')).render(
 import axios from "axios";
 
 // Point to your backend
-const api = axios.create({
-  baseURL: "http://localhost:3000/api",
+  const api = axios.create({
+  baseURL: "/api",//This allows Vite’s proxy to forward requests automatically to your backend, whether it is running on port 3000, 5050, or in production later.
   headers: { "Content-Type": "application/json" },
 });
 
 export default api;
 
-6- ProductContext.jsx / Cart Context
+6- ProductContext.jsx / CartContext.jsx / UserContext.jsx
+TEMPLATE FOR A CONTEXT FILE:
+import { createContext, useContext, useState } from "react";
 
-update app.jsx
+
+// 1️⃣ Create the Context object — this is the "shared box" for your data
+const MyContext = createContext();
+
+// 2️⃣ Create the Provider component
+export function MyProvider({ children }) {
+  // Define the shared state (can be anything: string, object, etc.)
+  const [value, setValue] = useState("default");
+
+  // Example of a function that updates the state
+  function updateValue(newValue) {
+    setValue(newValue);
+  }
+
+  // 3️⃣ Pass the data and functions to all child components through value
+  return (
+    <MyContext.Provider value={{ value, updateValue }}>
+      {children}
+    </MyContext.Provider>
+  );
+}
+
+// 4️⃣ Create a custom hook for easier access to the context
+export function useMyContext() {
+  return useContext(MyContext);
+}
+
+  update app.jsx
 
 import { useState } from 'react'
 import Navbar from "./Components/Navbar.jsx";
 import AppRoute from "./Routes/AppRoute.jsx";
+import { UserProvider } from "./Context/UserContext";
 import { ProductProvider } from "./Context/ProductContext.jsx";
 import { CartProvider } from "./Context/CartContext.jsx";
 import './App.css'
@@ -344,17 +420,168 @@ function App() {
   
   return (
     <>
+    <UserProvider>
     <ProductProvider>
       <CartProvider>
         <Navbar />
         <AppRoute />
       </CartProvider>
     </ProductProvider>
+    </UserProvider>
     </>
   )
 }
 
 export default App
 
-7-Navbar
+7- Pages: Home, Login, Cart, About
 
+This is like a TEMPLATE for all of them: 
+export default function LoginPage() {
+  return (
+    <div className="LoginPage componentBox">
+      <h1>Login</h1>
+      <LoginForm />
+    </div>
+  );
+}
+
+7.1 Homepage
+use const navigate = useNavigate(); //Built in hook. This creates a constant called navigate.
+
+7.2 About
+TEMPLATE
+import { Link } from "react-router-dom";
+
+function About() {
+  return (
+    <div className="PageNotFound">
+      <h1>Page Not Found</h1>
+      <p>
+        Going back <Link to="/">home</Link>
+      </p>
+    </div>
+  );
+}
+
+export default About;
+
+<Link> is a React Router component that changes pages without refreshing the browser. 
+It’s perfect when you want a menu link or a text link that takes users to another route.
+
+* I only need <Outlet /> if the app uses nested routes — meaning one route is displayed inside another route’s layout.
+if your homePage has internal sections such as /homePage/profile or /homePage/profilePage, you would use <Outlet /> 
+inside DashboardPage.jsx to show those child pages.
+Outlet is includen in homePage
+
+7.3 Login
+
+Also create loginForm under Components folder and userContext inside of Context folder, and import it from loginPage
+userContext, import the context in main.jsx
+*Main.js is the entry point of your React app.
+<React.StrictMode> helps catch coding mistakes in development.
+<UserProvider> wraps the whole app, giving access to currentUser, updateUser, and logOutUser anywhere inside.
+<App /> is your main component, which contains all pages and routes.
+<BrowserRouter> requires that your entire app be wrapped in a router provider
+*
+
+*App.jsx is the root component that defines the structure of your application.
+Defines what pages, routes, or components appear in the UI
+In App.jsx I can include the following: <Navbar> <main> <Footer> <BrowserRouter>
+BrowserRouter can also be included in its own file AppRoutes.jsx
+*
+7.4 Cart
+
+
+8- Components. LoginForm / NavBar
+
+8.1 LoginForm
+
+LoginFormloginForm.jsx = a small reusable component with logic.
+loginPage.jsx = a full screen (page) where that component is used.
+
+TEMPLATE FOR LOGIN FORM
+import React, { useState } from "react";
+import { useUser } from "../Context/UserContext"; // import your custom context hook
+
+export default function LoginForm() {
+  // 1️⃣ Access the context
+  const { currentUser, handleUpdateUser, handleLogout } = useUser();
+
+  // 2️⃣ Create local state for the email input
+  const [email, setEmail] = useState("");
+
+  // 3️⃣ Handle form submission
+  function handleSubmit(event) {
+    event.preventDefault();
+    if (email.trim() !== "") {
+      handleUpdateUser(email); // update user in context
+      setEmail(""); // clear input
+    }
+  }
+
+  // 4️⃣ If user is logged in, show welcome + logout
+  if (currentUser) {
+    return (
+      <div className="LoginForm">
+        <p>Welcome {currentUser.email}</p>
+        <button onClick={handleLogout}>Logout</button>
+      </div>
+    );
+  }
+
+  // 5️⃣ Otherwise, show login form
+  return (
+    <form onSubmit={handleSubmit} className="LoginForm">
+      <label htmlFor="email">Email:</label>
+      <input
+        id="email"
+        type="email"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+        placeholder="Enter your email"
+        required
+      />
+      <button type="submit">Login</button>
+    </form>
+  );
+}
+
+
+8.2-Navbar
+
+Add a navBar.jsx file inside of components
+
+TEMPLATE
+import { useContext } from "react";
+import { NavLink } from 'react-router-dom'
+import { useTheme } from "../Context/themeContext"
+
+
+export default function navBar () {
+    const { theme, toggleTheme } = useTheme(); // Access theme data
+    const { currentUser, logOutUser } = useUser();    // Access user info
+  return (
+    <nav
+    className="NavBar"
+    style={{
+        backgroundColor: theme.background, color: theme.foreground
+    }}
+    >
+    <div className="menu">
+      {/* Navigation links */}
+      <NavLink to="/home">Home</NavLink>
+      <NavLink to="/home/profile">Profile</NavLink>
+      <NavLink to="/login">Login</NavLink>
+    </div>
+    <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
+        {/* Theme toggle */}
+        <button onClick={toggleTheme}>
+          Switch to {theme.mode === "light" ? "Dark" : "Light"} Mode
+        </button>
+    </div>
+    </nav>
+  );
+}
+
+9- 
