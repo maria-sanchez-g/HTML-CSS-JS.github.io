@@ -29,7 +29,6 @@ Examples:
 A path is simply the URL location your app navigates to — for example /home, /login, /home/profile.
 
 In React Router, you can navigate or link in two ways:
-
 Type	Starts With /	Example	Interpreted As
 Absolute path	✅ Yes	/login	Go to exactly /login, no matter where you are
 Relative path	❌ No	login	Add login to the current URL path

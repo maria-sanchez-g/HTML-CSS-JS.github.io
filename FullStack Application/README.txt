@@ -434,68 +434,8 @@ function App() {
 
 export default App
 
-7- Pages: Home, Login, Cart, About
-
-This is like a TEMPLATE for all of them: 
-export default function LoginPage() {
-  return (
-    <div className="LoginPage componentBox">
-      <h1>Login</h1>
-      <LoginForm />
-    </div>
-  );
-}
-
-7.1 Homepage
-use const navigate = useNavigate(); //Built in hook. This creates a constant called navigate.
-
-7.2 About
-TEMPLATE
-import { Link } from "react-router-dom";
-
-function About() {
-  return (
-    <div className="PageNotFound">
-      <h1>Page Not Found</h1>
-      <p>
-        Going back <Link to="/">home</Link>
-      </p>
-    </div>
-  );
-}
-
-export default About;
-
-<Link> is a React Router component that changes pages without refreshing the browser. 
-It’s perfect when you want a menu link or a text link that takes users to another route.
-
-* I only need <Outlet /> if the app uses nested routes — meaning one route is displayed inside another route’s layout.
-if your homePage has internal sections such as /homePage/profile or /homePage/profilePage, you would use <Outlet /> 
-inside DashboardPage.jsx to show those child pages.
-Outlet is includen in homePage
-
-7.3 Login
-
-Also create loginForm under Components folder and userContext inside of Context folder, and import it from loginPage
-userContext, import the context in main.jsx
-*Main.js is the entry point of your React app.
-<React.StrictMode> helps catch coding mistakes in development.
-<UserProvider> wraps the whole app, giving access to currentUser, updateUser, and logOutUser anywhere inside.
-<App /> is your main component, which contains all pages and routes.
-<BrowserRouter> requires that your entire app be wrapped in a router provider
-*
-
-*App.jsx is the root component that defines the structure of your application.
-Defines what pages, routes, or components appear in the UI
-In App.jsx I can include the following: <Navbar> <main> <Footer> <BrowserRouter>
-BrowserRouter can also be included in its own file AppRoutes.jsx
-*
-7.4 Cart
-
-
-8- Components. LoginForm / NavBar
-
-8.1 LoginForm
+7 - Components: LoginForm, Navbar, ProductGrid, ProductCard
+7.1 LoginForm
 
 LoginFormloginForm.jsx = a small reusable component with logic.
 loginPage.jsx = a full screen (page) where that component is used.
@@ -547,10 +487,97 @@ export default function LoginForm() {
   );
 }
 
+7.2 ProductCard
+Look for the teamplate in MUI
+Card is used to display one single product.
 
-8.2-Navbar
+TEMPLATE
 
-Add a navBar.jsx file inside of components
+import { Card, CardMedia, CardContent, Typography, CardActions, Button, Stack } from "@mui/material";
+
+/*
+  Props:
+    title: string
+    subtitle: string (optional)
+    description: string (optional)
+    image: string (URL)
+    onAction: function (optional)
+    actionLabel: string (optional)
+*/
+
+export default function BaseCard({
+  title,
+  subtitle,
+  description,
+  image,
+  actionLabel = "Action",
+  onAction = () => {}
+}) {
+  return (
+    <Card sx={{ height: "100%", display: "flex", flexDirection: "column" }}>
+
+      <CardMedia
+        component="img"
+        height="160"
+        image={image}
+        alt={title}
+      />
+
+      <CardContent sx={{ flexGrow: 1 }}>
+        <Typography variant="h6">{title}</Typography>
+
+        {subtitle && (
+          <Typography variant="subtitle2" color="text.secondary">
+            {subtitle}
+          </Typography>
+        )}
+
+        {description && (
+          <Typography variant="body2" sx={{ mt: 1 }}>
+            {description}
+          </Typography>
+        )}
+      </CardContent>
+
+      <CardActions>
+        <Button fullWidth variant="contained" onClick={onAction}>
+          {actionLabel}
+        </Button>
+      </CardActions>
+
+    </Card>
+  );
+}
+
+
+7.3 ProductGrid
+Look for the teamplate in MUI
+Grid is used to display many cards in an organized layout that adjusts to screen size.
+
+TEMPLATE
+import { Grid } from "@mui/material";
+
+/*
+  Props:
+    items: array of objects
+    renderItem: function(item) => JSX
+*/
+
+export default function BaseGrid({ items, renderItem }) {
+  return (
+    <Grid container spacing={2}>
+      {items.map((item) => (
+        <Grid item key={item.id || item.key} xs={12} sm={6} md={4} lg={3}>
+          {renderItem(item)}
+        </Grid>
+      ))}
+    </Grid>
+  );
+}
+
+
+7.4-Navbar
+Look for the teamplate in MUI
 
 TEMPLATE
 import { useContext } from "react";
@@ -583,5 +610,81 @@ export default function navBar () {
     </nav>
   );
 }
+
+
+8- Pages: Home, Login, Cart, About
+
+This is like a TEMPLATE for all of them: 
+export default function LoginPage() {
+  return (
+    <div className="LoginPage componentBox">
+      <h1>Login</h1>
+      <LoginForm />
+    </div>
+  );
+}
+
+8.1 Homepage
+Home page calls ProductGrid
+import { useProducts } from "../Context/ProductContext";
+import ProductGrid from "../Components/ProductGrid";
+
+export default function Home() {
+  const { items: products, loading, error } = useProducts();
+  const navigate = useNavigate()
+  if (loading) return <div>Loading…</div>;
+  if (error)   return <div>Error: {error}</div>;
+
+  return <ProductGrid products={products} />;
+}
+
+use const navigate = useNavigate(); //Built in hook. This creates a constant called navigate.
+
+8.2 About
+TEMPLATE
+import { Link } from "react-router-dom";
+
+function About() {
+  return (
+    <div className="PageNotFound">
+      <h1>Page Not Found</h1>
+      <p>
+        Going back <Link to="/">home</Link>
+      </p>
+    </div>
+  );
+}
+
+export default About;
+
+<Link> is a React Router component that changes pages without refreshing the browser. 
+It’s perfect when you want a menu link or a text link that takes users to another route.
+
+* I only need <Outlet /> if the app uses nested routes — meaning one route is displayed inside another route’s layout.
+if your homePage has internal sections such as /homePage/profile or /homePage/profilePage, you would use <Outlet /> 
+inside DashboardPage.jsx to show those child pages.
+Outlet is includen in homePage
+
+8.3 Login
+
+Also create loginForm under Components folder and userContext inside of Context folder, and import it from loginPage
+userContext, import the context in main.jsx
+*Main.js is the entry point of your React app.
+<React.StrictMode> helps catch coding mistakes in development.
+<UserProvider> wraps the whole app, giving access to currentUser, updateUser, and logOutUser anywhere inside.
+<App /> is your main component, which contains all pages and routes.
+<BrowserRouter> requires that your entire app be wrapped in a router provider
+*
+
+*App.jsx is the root component that defines the structure of your application.
+Defines what pages, routes, or components appear in the UI
+In App.jsx I can include the following: <Navbar> <main> <Footer> <BrowserRouter>
+BrowserRouter can also be included in its own file AppRoutes.jsx
+*
+
+8.4 Cart
+
+
+
 
 9- 

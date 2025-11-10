@@ -1,24 +1,11 @@
-import { useNavigate} from 'react-router-dom'
-import { Grid } from '@mui/material';
+import { useProducts } from "../Context/ProductContext";
+import ProductGrid from "../Components/ProductGrid";
 
 export default function Home() {
-    const navigate = useNavigate(); //Built in hook. This creates a constant called navigate.
-    return (
-        <div className="HomePage">
-        <h1>Home Page</h1> 
-        <Grid container spacing={2}>
-            <Grid size={8}>
-                <Item>size=8</Item>
-            </Grid>
-            <Grid size={4}>
-                <Item>size=4</Item>
-            </Grid>
-            <Grid size={4}>
-                <Item>size=4</Item>
-            </Grid>
-            <Grid size={8}>
-                <Item>size=8</Item>
-            </Grid>
-        </Grid>
-    );
+  const { items: products, loading, error } = useProducts(); //Reads products, loading, and error from context. Renames items to products for clarity.Renaming is optional.
+
+  if (loading) return <div>Loading…</div>; //Shows a loading state while the data is being fetched.
+  if (error)   return <div>Error: {error}</div>; //
+
+  return <ProductGrid products={products} />;
 }
