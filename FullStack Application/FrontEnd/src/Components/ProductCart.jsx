@@ -1,20 +1,26 @@
 import { useContext } from "react";
 import { Card, CardContent, CardMedia, CardActions, Button, Typography, Chip, Stack } from "@mui/material";
-import { CartContext } from "../Context/CartContext";
+import { useCart } from "../Context/CartContext";
 
 export default function ProductCart({ product }) {
-  const { dispatch, items: cartItems } = useContext(CartContext); //Reads the cart context. Extracts the dispatch function and the items array, renaming it to cartItems, for clarity, i don't have to rename it.
+  //IMPORTANTconst { dispatch, items: cartItems } = useContext(CartContext); //Reads the cart context. Extracts the dispatch function and the items array, renaming it to cartItems, for clarity, i don't have to rename it.
 
-  const qtyInCart = cartItems.find(r => r.productId === product.id)?.qty || 0; //Searches the cart for this product’s line. If found, reads its qty. If not found, uses 0.
-    
-  const addOne = () => {
-    dispatch({ type: "ADD_ONE", payload: { productId: product.id } }); //Defines the click handler that sends an ADD_ONE action with this product’s id to the cart reducer.
+  //IMPORTANTconst qtyInCart = cartItems.find(r => r.productId === product.id)?.qty || 0; //Searches the cart for this product’s line. If found, reads its qty. If not found, uses 0.
+  const { cart, addOne, removeOne } = useCart();
+  const qtyInCart = cart.find(r => r.productId === product.id)?.qty || 0;
+  const outOfStock = product.stock === 0;
+
+//IMPORTANT   const addOne = () => {
+//     dispatch({ type: "ADD_ONE", payload: { productId: product.id } }); //Defines the click handler that sends an ADD_ONE action with this product’s id to the cart reducer.
   
-const deleteOne = () => {
-    dispatch({ type: "REMOVE_ONE", productId: product.id });
-    const outOfStock = product.stock === 0; //Precomputes a boolean to disable the button and show a label when there is no stock.
-};
-  
+// const deleteOne = () => {
+//     dispatch({ type: "REMOVE_ONE", productId: product.id });
+//     const outOfStock = product.stock === 0; //Precomputes a boolean to disable the button and show a label when there is no stock.
+// };
+ 
+  const handleAdd = () => addOne(product.id);
+  const handleDelete = () => removeOne(product.id);
+
   return (
     <Card sx={{ height: "100%", display: "flex", flexDirection: "column" }}>
       <CardMedia component="img" height="160" image={product.image} alt={product.model} />

@@ -28,7 +28,8 @@ async function getCart(req, res, next) { //This controller handles returning the
 // POST /api/cart/:productId  (add one unit)
 async function add(req, res, next) {
   try {
-    const productId = Number(req.params.productId);
+    console.log("POST /cart/add body ->", req.body);
+    const productId = Number(req.body.productId);
     const product = await ProductsService.readById(productId); //Check if the product actually exists
     if (!product) return res.status(404).json({ error: 'Product not found' }); //If it does not exist, reply with 404 Not Found.
 
@@ -41,7 +42,8 @@ async function add(req, res, next) {
 // DELETE /api/cart/:productId  (remove one unit)
 async function removeOne(req, res, next) {
   try {
-    const productId = Number(req.params.productId); //Extract and convert the product ID from the URL.
+    console.log("POST /cart/remove body ->", req.body);
+    const productId = Number(req.body.productId); //Extract and convert the product ID from the URL.
     const items = CartService.deleteOne(productId); // match your service name. Call the cart service to remove one unit. If quantity becomes zero, the service removes the item entirely.
     const body = await withTotals(items);
     return res.status(200).json(body);
@@ -57,4 +59,14 @@ async function clear(req, res, next) {
   } catch (err) { next(err); }
 }
 
-module.exports = { getCart, add, removeOne, clear };
+// POST /api/cart/remove-all
+async function removeAll(req, res, next) {
+  try {
+    console.log("POST /cart/remove-all body ->", req.body);
+    const productId = Number(req.body.productId);    // ← from body
+    const items = CartService.deleteAll(productId);  // or your equivalent service fn
+    const body = await withTotals(items);
+    return res.status(200).json(body);
+  } catch (err) { next(err); }
+}
+module.exports = { getCart, add, removeOne, clear, removeAll };

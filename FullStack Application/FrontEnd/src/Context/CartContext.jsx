@@ -82,7 +82,7 @@ export function CartProvider({ children }) {
 
 async function addOne(productId) {
 
-    await api.post("/cart/add", { productId });
+    await api.delete(`/cart/${productId}`);
     dispatch({ type: Types.ADD_ONE, productId });
   }
 
@@ -97,7 +97,7 @@ async function addOne(productId) {
   }
 
   async function reset() {
-    await api.post("/cart/reset");
+    await api.delete(`/cart`); // matches router.delete("/", controller.clear) from the backend cartRoutes
     dispatch({ type: Types.RESET });
   }
 

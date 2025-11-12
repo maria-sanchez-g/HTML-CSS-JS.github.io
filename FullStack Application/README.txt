@@ -684,7 +684,80 @@ BrowserRouter can also be included in its own file AppRoutes.jsx
 
 8.4 Cart
 
+TEMPLATE
+import { useContext } from "react";
+import { Container, Typography } from "@mui/material";
+// import { CartContext } from "../Context/CartContext";  // You will enable this later
 
+export default function Cart() {
+  // 1) Get cart data from CartContext here
+  // const { items, dispatch } = useContext(CartContext);
 
+  // 2) Calculate total price here
+  // const total = ...
 
-9- 
+  return (
+    <Container sx={{ paddingY: 4 }}>
+      {/* Title */}
+      <Typography variant="h4" gutterBottom>
+        My Cart
+      </Typography>
+
+      {/* 3) If cart is empty, show a message */}
+      {/* Example:
+          if (items.length === 0) return <Typography>Your cart is empty.</Typography>
+      */}
+
+      {/* 4) List your cart items in a loop */}
+      {/* Replace the placeholder below with a .map loop */}
+      <div>
+        {/* Example structure for each item:
+            <div>
+              <img src={item.image} />
+              <p>{item.name}</p>
+              <p>{item.qty}</p>
+              <button>+</button>
+              <button>-</button>
+              <button>Remove All</button>
+            </div>
+        */}
+      </div>
+
+      {/* 5) Display total price */}
+      {/* <Typography variant="h6">Total: {total}</Typography> */}
+
+      {/* 6) Optional: Checkout button */}
+      {/* <button>Checkout</button> */}
+    </Container>
+  );
+}
+
+9- modify vite.config.js
+
+// vite.config.js
+import { defineConfig } from "vite";
+import react from "@vitejs/plugin-react";
+
+export default defineConfig({
+  plugins: [react()],
+  server: {
+    proxy: {
+      "/api": {
+        target: "http://localhost:3000",
+        changeOrigin: true,
+        secure: false,
+      },
+    },
+  },
+});
+
+//I had to change my proxy because the frontend and backend because backend runs on: http://localhost:3000 and frontnd on: http://localhost:5173.
+//That coused me an issue
+//This is called the Same-Origin Policy.
+//Browsers block requests between different origins unless the backend explicitly allows it using CORS headers.
+//Your backend was not sending those CORS headers, so the browser blocked the request → Network Error.
+// Why this works
+// The browser never sees port 3000 anymore.
+// It only talks to 5173 (the same origin).
+// Vite silently forwards the request to backend 3000 behind the scenes.
+// That removes the need for CORS on the backend

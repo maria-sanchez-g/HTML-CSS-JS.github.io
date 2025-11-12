@@ -5,7 +5,7 @@ const express = require("express");
 const app = express();
 
 // This middleware allows Express to read JSON in request bodies
-app.use(express.json());
+app.use(express.json());  // <- required to read req.body
 
 // Mount route files
 app.use("/api/products", require("./Routes/productRoutes"));

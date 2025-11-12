@@ -37,8 +37,10 @@ export default function NavBar() {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            My App
-          </Typography>
+            My App {totalItems}</Typography>
+          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+            Cart
+          </Typography>          
           <Button color="inherit" onClick={() => navigate("/")}>
             Home
           </Button>
