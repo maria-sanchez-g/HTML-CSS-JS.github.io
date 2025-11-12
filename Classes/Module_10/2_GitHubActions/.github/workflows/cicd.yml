@@ -37,3 +37,4 @@ jobs:
        tags: ${{ secrets.DOCKER_HUB_USERNAME }}/mvc-structure:latest
    - name: Image digest
      run: echo ${{ steps.docker_build.outputs.digest }}
+     
