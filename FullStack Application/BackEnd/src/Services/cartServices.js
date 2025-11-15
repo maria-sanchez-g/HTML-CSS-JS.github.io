@@ -18,11 +18,11 @@ if (index == -1) { //This checks whether the product is not in the cart. index =
 } else {
     cart[index].qty += 1; //if the product is in the cart, this increases the quantity (qty) of the existing product by one. It means cart[index].qty = cart[index].qty + 1;
 }
-return getCart
+return getCart();
 }
 
 //delete
-const deleteCart = (productId) => {
+const deleteOne = (productId) => {
 const index = findIndex (productId);
 if (index == -1) {
 return getCart(); //nothing to remove
@@ -34,6 +34,13 @@ if (cart[index].qty == 0) { //if there is no item with that id, remove it from t
     return getCart()
 }
 
+//Delete all
+const deleteAll = (productId) => {
+  const index = findIndex(productId);
+  if (index !== -1) cart.splice(index, 1);
+  return getCart();
+};
+
 //clear cart
 
 const clearCart = () => {
@@ -43,5 +50,5 @@ const clearCart = () => {
 
 
 module.exports = {
-    deleteCart, addCart, findIndex, getCart
+    deleteAll, addCart, findIndex, getCart, deleteOne, clearCart
 };

@@ -7,21 +7,18 @@ import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
+import Badge from "@mui/material/Badge"
 import { useNavigate } from "react-router-dom";
 import { useCart } from "../Context/CartContext";
 import { useUser } from "../Context/UserContext";
+import { useProducts } from "../Context/ProductContext.jsx";
+
 
 export default function NavBar() {
   const navigate = useNavigate();
-  const { cart } = useCart();
-
- // Count total items in cart
-  const totalItems = cart.reduce((sum, item) => sum + item.qty, 0);//This line adds up all the quantities of all products in the cart to get one total count.
-//.reduce() Takes an array and reduces it into one result
-// cart.reduce(...)	Loop through each element in the cart array.
-// (sum, item)	sum is the accumulator (running total), item is the current cart line.
-// sum + item.qty	Add the quantity of the current item to the running total.
-// 0	The starting value for sum is zero.
+  const { totalQty, totalPrice } = useCart();
+  const { items: products } = useProducts();
+  const grandTotal = totalPrice(products);
 
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -35,21 +32,21 @@ export default function NavBar() {
             sx={{ mr: 2 }}
           >
             <MenuIcon />
-          </IconButton>
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            My App {totalItems}</Typography>
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            Cart
-          </Typography>          
+          </IconButton>     
           <Button color="inherit" onClick={() => navigate("/")}>
             Home
           </Button>
             <Button color="inherit" onClick={() => navigate("/about")}>
             About
-          </Button>
+         </Button>
           <Button color="inherit" onClick={() => navigate("/cart")}>
+            <Badge badgeContent={totalQty} color="error">
             Cart
-          </Button>
+           </Badge>
+          <Typography variant="body2">
+             ${grandTotal.toFixed(2)}           
+          </Typography>
+         </Button>
           <Button color="inherit" onClick={() => navigate("/login")}>
             Login
           </Button>

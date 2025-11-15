@@ -6,7 +6,7 @@ async function list(req, res, next) { //Declare an asynchronous controller named
   try { //error handling block
     const items = await ProductsService.read(); //Call the service to fetch all products. await pauses until the Promise resolves and assigns the array to items. read comes from the file productServices
     return res.status(200).json({ items }); //Send HTTP 200 OK with a JSON body that wraps the array under the items key. return stops execution.
-  } catch (err) { next(err); } //If anything throws, forward the error to Express’s centralized error middleware.
+  } catch (err) { console.error("LIST /products failed:", err); next(err); } //If anything throws, forward the error to Express’s centralized error middleware.
 }
 
 // GET /api/products/:id

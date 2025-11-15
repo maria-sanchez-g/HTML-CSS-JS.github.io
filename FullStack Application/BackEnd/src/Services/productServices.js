@@ -7,6 +7,34 @@ const cars = [
     {id: 5, model: "BMW", year: 2021, price: 1000, stock: 2, image: "https://example.com/toyota.jpg"},
 ]
 
+//nextid
+const nextId = () => (cars.length ? Math.max(...cars.map(c => c.id)) + 1 : 1); 
+
+//ternary operator If cars.length is greater than 0, it means the array has cars, so calculate the next ID.
+//If cars.length is 0, return 1 as the first ID.
+//condition ? valueIfTrue : valueIfFalse
+//cars.map(c => c.id) This creates a new array (sprad operator) containing only the IDs of all cars
+//Math.max() returns the largest number
+//Math.max(...) + 1 This takes the highest ID and adds 1, giving you the next ID
+//c is the name of the parameter in the callback function. Represents one car object from the cars array during each iteration.
+
+// function nextId() {
+//   // If there are no cars, return 1
+//   if (cars.length === 0) {
+//     return 1;
+//   }
+
+//   // Create an array with all the ids
+//   const ids = cars.map(car => car.id);
+
+//   // Find the maximum id
+//   const maxId = Math.max(...ids);
+
+//   // Return the next id
+//   return maxId + 1;
+// }
+
+
 //Add
 const add = (car) => {
 const item = { id: nextId(), ...car };
@@ -28,7 +56,7 @@ const update = (id, data) => { //we add data because we want to modify the id an
 const targetCar = findId(id); //Finds the specific object in your array that matches the given id.
 const targetIndex = cars.indexOf(targetCar); //Locates the position (index) of that car inside the cars array.
 const updatedCar = {...targetCar, ...data}; //shallow copy
-cars.splice (targetIndex, 1, updateCar); //where the id is located, remove one item (1 refers to 1 item), insert the new element
+cars.splice (targetIndex, 1, updatedCar); //where the id is located, remove one item (1 refers to 1 item), insert the new element
 return updatedCar //it will give you the new list
 }
 

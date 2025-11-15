@@ -81,13 +81,12 @@ export function CartProvider({ children }) {
   const cart = state.items;
 
 async function addOne(productId) {
-
-    await api.delete(`/cart/${productId}`);
+    await api.post(`/cart/${productId}`);
     dispatch({ type: Types.ADD_ONE, productId });
   }
 
   async function removeOne(productId) {
-    await api.post("/cart/remove", { productId });
+    await api.delete(`/cart/${productId}`);
     dispatch({ type: Types.REMOVE_ONE, productId });
   }
 
@@ -97,7 +96,7 @@ async function addOne(productId) {
   }
 
   async function reset() {
-    await api.delete(`/cart`); // matches router.delete("/", controller.clear) from the backend cartRoutes
+    await api.delete("/cart"); // matches router.delete("/", controller.clear) from the backend cartRoutes
     dispatch({ type: Types.RESET });
   }
 
@@ -124,17 +123,26 @@ const countPerProduct = (productId) =>
       };
     });
 
+  // Derived total quantity
+  const totalQty = useMemo(
+    () => cart.reduce((s, l) => s + l.qty, 0),
+    [cart]
+    );
+
   // Calculates total price
-  const totalPrice = (products) =>
-    cart.reduce((sum, line) => {
-      const product = products.find(p => p.id === line.productId);
-      return product ? sum + product.price * line.qty : sum;
-    }, 0);
+  const totalPrice = (products = []) => {
+      const priceById = new Map(products.map(p => [Number(p.id), Number(p.price) || 0]));
+      return cart.reduce(
+      (sum, line) => sum + (priceById.get(Number(line.productId)) || 0) * line.qty,
+      0
+        );
+    };
 
   // Memoize values for performance
   const value = useMemo( //useMemo prevents unnecessary re-rendering.
     () => ({
       cart,
+      totalQty,
       addOne,
       removeOne,
       removeAll,
@@ -143,7 +151,7 @@ const countPerProduct = (productId) =>
       groupedLines,
       totalPrice,
     }),
-    [cart]
+    [cart, totalQty]
   );
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;

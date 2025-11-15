@@ -19,7 +19,7 @@ export default function ProductCart({ product }) {
 // };
  
   const handleAdd = () => addOne(product.id);
-  const handleDelete = () => removeOne(product.id);
+  const handleRemoveOne = () => removeOne(product.id);
 
   return (
     <Card sx={{ height: "100%", display: "flex", flexDirection: "column" }}>
@@ -37,9 +37,10 @@ export default function ProductCart({ product }) {
         </Typography>
       </CardContent>
       <CardActions>
-        <Button onClick={addOne} variant="contained" fullWidth>Add to Cart</Button>
-        <Button onClick={deleteOne} variant="outlined" fullWidth>Delete</Button>
+        <Button onClick={handleAdd} variant="contained" fullWidth>Add to Cart</Button>
+        <Button onClick={handleRemoveOne} disabled={qtyInCart === 0} variant="outlined" fullWidth>Delete</Button> 
       </CardActions>
     </Card>
   );
 }
+//Disable (gray out) the button when the quantity of this product in the cart is zero.

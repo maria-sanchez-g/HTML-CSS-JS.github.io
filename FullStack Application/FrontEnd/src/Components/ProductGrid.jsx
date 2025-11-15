@@ -1,4 +1,4 @@
-import { Grid } from "@mui/material";
+import Grid from "@mui/material/Grid";
 import Container from "@mui/material/Container";
 import ProductCard from "./ProductCard";
 
@@ -7,7 +7,7 @@ export default function ProductGrid({ products }) {
     <Container sx={{ py: 4 }}>
       <Grid container spacing={2}>
         {products.map((p) => (
-          <Grid item key={p.id} xs={12} sm={6} md={4} lg={3}>
+          <Grid key={p.id} size={{ xs: 12, sm: 6, md: 4, lg: 3 }}>
             <ProductCard product={p} />
           </Grid>
         ))}

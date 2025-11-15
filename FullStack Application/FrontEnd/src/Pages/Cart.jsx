@@ -1,11 +1,15 @@
 // src/Pages/Cart.jsx
 import { Container, Typography, Button, Stack } from "@mui/material";
-import { useCart } from "../Context/cartContext"; // note the exact filename/casing
+import { useCart } from "../Context/CartContext"; // note the exact filename/casing
+import { useProducts } from "../Context/ProductContext.jsx";
 
 export default function Cart() {
-  const { cart, addOne, removeOne, removeAll } = useCart();
-
-  const totalQty = cart.reduce((sum, item) => sum + item.qty, 0);
+  const { cart, addOne, totalQty, groupedLines, totalPrice, removeOne, removeAll } = useCart();
+  const { items: products } = useProducts();
+    // Cart lines joined with full product info (price, model, etc.)
+  const lines = groupedLines(products);
+   // Calculate total money value of the cart
+  const grandTotal = totalPrice(products);
 
   return (
     <Container sx={{ paddingY: 4 }}>
@@ -17,6 +21,7 @@ export default function Cart() {
         <div key={item.productId}>
           <p>Product: {item.productId}</p>
           <p>Quantity: {item.qty}</p>
+          <p>Price: {item.price}</p>
 
           <Stack direction="row" spacing={1}>
             <Button variant="outlined" onClick={() => addOne(item.productId)}>+</Button>
@@ -31,6 +36,7 @@ export default function Cart() {
       ))}
 
       <Typography variant="h6">Total items in cart: {totalQty}</Typography>
+      <Typography variant="h6">Total price: ${grandTotal.toFixed(2)}</Typography>
     </Container>
   );
 }

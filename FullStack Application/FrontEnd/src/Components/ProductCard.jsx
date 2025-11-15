@@ -27,12 +27,13 @@ const handleRemove = () => removeOne(product.id);
       </CardContent>
       <CardActions>
         <Button onClick={handleAdd} disabled={outOfStock} variant="contained" fullWidth>
-          Add to Cart
+          Add
         </Button>
-        <Button onClick={handleRemove} variant="outlined" fullWidth>
+        <Button onClick={handleRemove} disabled={outOfStock} variant="outlined" fullWidth>
           Delete
         </Button>
       </CardActions>
     </Card>
   );
 }
+//Disable the “Add to Cart” button when the product is out of stock.
