@@ -8,7 +8,7 @@ const outOfStock = product.stock === 0;
 
 const handleAdd = () => addOne(product.id);
 const handleRemove = () => removeOne(product.id);
-
+//addOne and removeOne come from your CartContext. //So handleAdd simply calls addOne(product.id) when you click Add,
   
   return (
     <Card sx={{ height: "100%", display: "flex", flexDirection: "column" }}>

@@ -42,12 +42,10 @@ const deleteAll = (productId) => {
 };
 
 //clear cart
-
 const clearCart = () => {
     cart.length = 0; //When you set the length property of an array to 0, it removes every element inside it.
     return getCart();
 }
-
 
 module.exports = {
     deleteAll, addCart, findIndex, getCart, deleteOne, clearCart

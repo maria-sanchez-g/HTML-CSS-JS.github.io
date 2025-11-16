@@ -24,3 +24,10 @@ function App() {
 
 export default App
 
+// Your contexts — UserProvider, ProductProvider, and CartProvider — act like invisible storage layers.
+// They allow you to share information across all pages without passing props manually.
+
+// Provider	Purpose
+// UserProvider	Keeps track of who is logged in (user details, tokens).
+// ProductProvider	Loads and provides product data to any page or component.
+// CartProvider	Manages cart items, total quantity, and prices.
